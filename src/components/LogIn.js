@@ -1,10 +1,13 @@
+
 // import React, { useState, useEffect } from 'react';
-// import './Login.scss'; // Đảm bảo rằng bạn đã tạo file Login.scss trong thư mục src
+// import { useNavigate } from 'react-router-dom';
+// import '../Login.scss';
 
 // const LogIn = () => {
 //   const [username, setUsername] = useState('');
 //   const [password, setPassword] = useState('');
 //   const [rememberMe, setRememberMe] = useState(false);
+//   const navigate = useNavigate();
 
 //   useEffect(() => {
 //     const savedUsername = localStorage.getItem('username');
@@ -25,8 +28,8 @@
 //       localStorage.removeItem('username');
 //       localStorage.removeItem('password');
 //     }
-//     // Xử lý đăng nhập ở đây, ví dụ gửi thông tin đến server
 //     alert('Đăng nhập thành công!');
+//     navigate('/home');
 //   };
 
 //   return (
@@ -72,11 +75,12 @@
 // };
 
 // export default LogIn;
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Login.scss';
 
-const LogIn = () => {
+const LogIn = ({ setWebSocket }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -101,8 +105,31 @@ const LogIn = () => {
       localStorage.removeItem('username');
       localStorage.removeItem('password');
     }
-    alert('Đăng nhập thành công!');
-    navigate('/home');
+
+    // Establish WebSocket connection
+    const ws = new WebSocket('ws://140.238.54.136:8080/chat/chat');
+    ws.onopen = () => {
+      console.log('WebSocket connected');
+      // Send registration message
+      const registrationMessage = {
+        action: 'onchat',
+        data: {
+          event: 'REGISTER',
+          data: {
+            user: username,
+            pass: password
+          }
+        }
+      };
+      ws.send(JSON.stringify(registrationMessage));
+      setWebSocket(ws);
+      alert('Đăng nhập thành công!');
+      navigate('/home');
+    };
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+      alert('Đăng nhập thất bại!');
+    };
   };
 
   return (
