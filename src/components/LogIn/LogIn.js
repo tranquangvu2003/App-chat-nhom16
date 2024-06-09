@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../Login.scss';
+import '../../Login.scss';
 
 const LogIn = ({ setWebSocket }) => {
   const [username, setUsername] = useState('');

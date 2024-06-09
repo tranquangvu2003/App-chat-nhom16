@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LogIn from './components/LogIn';
-import HomePage from './components/HomePage';
+import LogIn from './components/LogIn/LogIn';
+import HomePage from './components/HomePage/HomePage';
 
 const App = () => {
   const [webSocket, setWebSocket] = useState(null);
