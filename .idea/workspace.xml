@@ -5,17 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="94668e6e-bde1-43aa-a1b7-7529c0df6003" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Chat.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Chat.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Discussions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Discussions.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Menu.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Menu.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/HomePage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/HomePage.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/HomePage.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/LogIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LogIn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Chat.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Chat/Chat.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Chat.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Chat/Chat.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Chat/Chat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Chat.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Chat/Chat.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Discussions.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Discussions/Discussions.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Discussions.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Discussions/Discussions.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Discussions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Discussions.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Discussions/Discussions.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/HomePage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/HomePage/HomePage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/HomePage.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/HomePage/HomePage.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/HomePage/HomePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/HomePage.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/HomePage/HomePage.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/LogIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LogIn/LogIn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Menu.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Menu/Menu.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Menu.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Menu/Menu.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Menu/Menu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Menu.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Menu/Menu.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +63,13 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\CloneWeb\App-chat-nhom16\src\components" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\CloneWeb\App-chat-nhom16\src\components\Menu" />
+      <recent name="D:\CloneWeb\App-chat-nhom16\src\components\LogIn" />
+      <recent name="D:\CloneWeb\App-chat-nhom16\src\components\HomePage" />
+      <recent name="D:\CloneWeb\App-chat-nhom16\src\components\Discussions" />
+      <recent name="D:\CloneWeb\App-chat-nhom16\src\components\Chat" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -67,6 +81,7 @@
       <updated>1717574108252</updated>
       <workItem from="1717574110710" duration="4496000" />
       <workItem from="1717579690874" duration="297000" />
+      <workItem from="1717944450912" duration="345000" />
     </task>
     <servers />
   </component>
