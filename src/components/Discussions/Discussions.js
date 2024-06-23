@@ -1,6 +1,6 @@
 import React from "react";
 import './Discussions.scss'
-import UserDicusstion from "./UserDicusstion";
+import userDicusstion from "../UserDicusstion";
 const Discussions = () => {
     return(
         <>
