@@ -5,8 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="94668e6e-bde1-43aa-a1b7-7529c0df6003" name="Changes" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/src/components/Register/Register.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Register/Register.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Login.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LogIn/Login.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/LogIn/LogIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LogIn/LogIn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+>>>>>>> f38cdf8779cafd35d18540844f6a625a2b67fe43
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +39,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -41,18 +53,34 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;ts.external.directory.path&quot;: &quot;D:\\WebStorm\\WebStorm 2023.3.5\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "tqvu",
+    "last_opened_file_path": "D:/CloneWeb/App-chat-nhom16/src",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "D:\\WebStorm\\WebStorm 2023.3.5\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
+>>>>>>> f38cdf8779cafd35d18540844f6a625a2b67fe43
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\CloneWeb\App-chat-nhom16\src" />
       <recent name="D:\CloneWeb\App-chat-nhom16\src\components" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\CloneWeb\App-chat-nhom16\src\components\Menu" />
+      <recent name="D:\CloneWeb\App-chat-nhom16\src\components" />
       <recent name="D:\CloneWeb\App-chat-nhom16\src\components\LogIn" />
+      <recent name="D:\CloneWeb\App-chat-nhom16\src\components\Menu" />
       <recent name="D:\CloneWeb\App-chat-nhom16\src\components\HomePage" />
       <recent name="D:\CloneWeb\App-chat-nhom16\src\components\Discussions" />
-      <recent name="D:\CloneWeb\App-chat-nhom16\src\components\Chat" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -73,9 +101,15 @@
       <workItem from="1717574110710" duration="4496000" />
       <workItem from="1717579690874" duration="297000" />
       <workItem from="1717944450912" duration="345000" />
+<<<<<<< HEAD
       <workItem from="1718369919168" duration="1860000" />
       <workItem from="1719296722863" duration="2095000" />
       <workItem from="1719299845419" duration="1390000" />
+=======
+      <workItem from="1718369625264" duration="1409000" />
+      <workItem from="1719073555887" duration="1275000" />
+      <workItem from="1719108004719" duration="5767000" />
+>>>>>>> f38cdf8779cafd35d18540844f6a625a2b67fe43
     </task>
     <servers />
   </component>
