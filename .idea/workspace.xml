@@ -5,6 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="94668e6e-bde1-43aa-a1b7-7529c0df6003" name="Changes" comment="">
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" afterDir="false" />
+=======
       <change afterPath="$PROJECT_DIR$/src/components/Register/Register.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/components/Register/Register.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -13,6 +17,7 @@
       <change beforePath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/LogIn/LogIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LogIn/LogIn.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+>>>>>>> f38cdf8779cafd35d18540844f6a625a2b67fe43
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +39,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;lechitruong&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/NLU/Nam3Ki2/LTFRONTEND/App-chat/App-chat-nhom16&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\WebStorm\\WebStorm 2023.3.5\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+=======
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -47,6 +67,7 @@
     "nodejs_package_manager_path": "npm",
     "ts.external.directory.path": "D:\\WebStorm\\WebStorm 2023.3.5\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
+>>>>>>> f38cdf8779cafd35d18540844f6a625a2b67fe43
   }
 }]]></component>
   <component name="RecentsManager">
@@ -62,6 +83,13 @@
       <recent name="D:\CloneWeb\App-chat-nhom16\src\components\Discussions" />
     </key>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-WS-241.15989.105" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -73,9 +101,15 @@
       <workItem from="1717574110710" duration="4496000" />
       <workItem from="1717579690874" duration="297000" />
       <workItem from="1717944450912" duration="345000" />
+<<<<<<< HEAD
+      <workItem from="1718369919168" duration="1860000" />
+      <workItem from="1719296722863" duration="2095000" />
+      <workItem from="1719299845419" duration="1390000" />
+=======
       <workItem from="1718369625264" duration="1409000" />
       <workItem from="1719073555887" duration="1275000" />
       <workItem from="1719108004719" duration="5767000" />
+>>>>>>> f38cdf8779cafd35d18540844f6a625a2b67fe43
     </task>
     <servers />
   </component>
