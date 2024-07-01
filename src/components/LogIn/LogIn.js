@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.scss';
-import {Link} from "react-router-dom";
-import Register from "../Register/Register";
+import '../../Login.scss';
 
 const LogIn = ({ setWebSocket }) => {
   const [username, setUsername] = useState('');
@@ -40,6 +38,10 @@ const LogIn = ({ setWebSocket }) => {
         // Đăng nhập thành công
         alert('Đăng nhập thành công!');
         <LogIn setWebSocket={setWebSocket} />
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify({ username: username, password: password})
+        );
         navigate('/home');
       } else {
         // Đăng nhập thất bại
@@ -82,9 +84,6 @@ const LogIn = ({ setWebSocket }) => {
           </div>
           <button type="submit">Đăng Nhập</button>
         </form>
-        <div className="btn-register">
-          <button><Link to="/register">Đăng kí</Link></button>
-        </div>
       </div>
   );
 };
