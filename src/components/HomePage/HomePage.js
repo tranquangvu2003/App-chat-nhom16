@@ -12,7 +12,7 @@ import Menu from "../Menu/Menu";
           
           <Menu/>
           <Discussions/>
-         <Chat/>
+          <Chat />
          
         </div>
       </div>
