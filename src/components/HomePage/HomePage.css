@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  height: 700px;
+  width: 1000px;
+}
+
+.row {
+  display: flex;
+  flex: 1;
+}
+
+/*# sourceMappingURL=HomePage.css.map */

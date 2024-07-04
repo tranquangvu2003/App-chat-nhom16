@@ -232,7 +232,6 @@ const Chat = () => {
     )}
   </tr>
 ))
-
             )}
           </tbody>
         </table>

@@ -1,0 +1,81 @@
+.discussions {
+  flex: 1;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #ddd;
+}
+.discussions .discussion {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+.discussions .discussion.search .searchbar {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 10px;
+  flex: 1;
+}
+.discussions .discussion.search .searchbar i {
+  margin-right: 10px;
+}
+.discussions .discussion.search .searchbar input {
+  border: none;
+  outline: none;
+  flex: 1;
+}
+.discussions .discussion.search .buttons {
+  display: flex;
+  align-items: center;
+}
+.discussions .discussion.search .buttons .btn-add-member,
+.discussions .discussion.search .buttons .btn-add-group {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 20px;
+  color: #3b5998;
+}
+.discussions .discussion.message-active {
+  background-color: #e9ebee;
+}
+.discussions .discussion .photo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.discussions .discussion .photo .online {
+  width: 10px;
+  height: 10px;
+  background-color: #4caf50;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.discussions .discussion .desc-contact {
+  flex: 1;
+  padding: 0 20px;
+}
+.discussions .discussion .desc-contact .name {
+  font-weight: bold;
+  margin: 0;
+}
+.discussions .discussion .desc-contact .message {
+  margin: 0;
+}
+.discussions .discussion .timer {
+  font-size: 12px;
+  color: #999;
+}
+
+/*# sourceMappingURL=Discussions.css.map */
