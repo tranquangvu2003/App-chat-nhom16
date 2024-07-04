@@ -197,28 +197,41 @@ const Chat = () => {
               </tr>
             ) : (
               messages.map((message, index) => (
-                <tr key={index} style={{ height: "50px" }}>
-                  {message.name === person ? (
-                    <>
-                      <td style={{ width: "400px" }} className="you">
-                        {message.mes}
-                      </td>
-                      <td style={{ width: "400px" }} className="me">
-                        &nbsp;
-                      </td>
-                    </>
-                  ) : (
-                    <>
-                      <td style={{ width: "400px" }} className="you">
-                        &nbsp;
-                      </td>
-                      <td style={{ width: "400px" }} className="me">
-                        {message.mes}
-                      </td>
-                    </>
-                  )}
-                </tr>
-              ))
+  <tr key={index} style={{ height: "50px" }}>
+    {message.name === person ? (
+      <>
+        <td style={{
+          width: "400px",
+          borderRadius: "10px",
+          boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
+          backgroundColor: "#f2f2f2",
+          padding: "20px", // Adjust margin as needed
+        }} className="you">
+          {message.mes}
+        </td>
+        <td style={{ width: "400px" }} className="me">
+          &nbsp;
+        </td>
+      </>
+    ) : (
+      <>
+        <td style={{ width: "400px" }} className="you">
+          &nbsp;
+        </td>
+        <td style={{
+          width: "400px",
+          borderRadius: "10px",
+          boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
+          backgroundColor: "#f2f2f2",
+          padding: "20px",
+          textAlign:"right",
+        }} className="me">
+          {message.mes}
+        </td>
+      </>
+    )}
+  </tr>
+))
             )}
           </tbody>
         </table>
