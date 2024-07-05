@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useRef, useState } from "react";
 import "./Chat.scss";
 import { useLocation } from "react-router-dom";
@@ -10,7 +12,7 @@ const Chat = () => {
   const tbodyRef = useRef(null); // Tham chiếu cho tbody
   const currentUserString = localStorage.getItem("currentUser");
   const currentUser = JSON.parse(currentUserString);
-  const [person, setPerson] = useState("");
+  const [person, setPerson] = useState("21130591");
   const [loading, setLoading] = useState(false); // Trạng thái loading
 
   useEffect(() => {
@@ -63,10 +65,9 @@ const Chat = () => {
     };
 
     webSocket.onmessage = (event) => {
-
       const message = JSON.parse(event.data);
       console.log("Received message:", message);
-     
+
       if (message.event === "LOGIN") {
         if (message.status === "success") {
           // Sau khi đăng nhập thành công, gửi tin nhắn tới person hiện tại
@@ -127,6 +128,10 @@ const Chat = () => {
       tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const handleDeleteMessage = (index) => {
+    setMessages((prevMessages) => prevMessages.filter((_, i) => i !== index));
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -197,41 +202,56 @@ const Chat = () => {
               </tr>
             ) : (
               messages.map((message, index) => (
-  <tr key={index} style={{ height: "50px" }}>
-    {message.name === person ? (
-      <>
-        <td style={{
-          width: "400px",
-          borderRadius: "10px",
-          boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
-          backgroundColor: "#f2f2f2",
-          padding: "20px", // Adjust margin as needed
-        }} className="you">
-          {message.mes}
-        </td>
-        <td style={{ width: "400px" }} className="me">
-          &nbsp;
-        </td>
-      </>
-    ) : (
-      <>
-        <td style={{ width: "400px" }} className="you">
-          &nbsp;
-        </td>
-        <td style={{
-          width: "400px",
-          borderRadius: "10px",
-          boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
-          backgroundColor: "#f2f2f2",
-          padding: "20px",
-          textAlign:"right",
-        }} className="me">
-          {message.mes}
-        </td>
-      </>
-    )}
-  </tr>
-))
+                <tr key={index} style={{ height: "50px" }}>
+                  {message.name === person ? (
+                    <>
+                      <td
+                        style={{
+                          width: "300px",
+                          borderRadius: "10px",
+                          boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
+                          backgroundColor: "#f2f2f2",
+                          padding: "20px", // Adjust margin as needed
+                        }}
+                        className="you"
+                      >
+                        {message.mes}
+                      </td>
+                      <td style={{ width: "400px" }} className="me">
+                        &nbsp;
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td style={{ width: "400px" }} className="you">
+                        &nbsp;
+                      </td>
+                      <td
+                        style={{
+                          width: "300px",
+                          borderRadius: "10px",
+                          boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
+                          backgroundColor: "#f2f2f2",
+                          padding: "20px",
+                          textAlign: "right",
+                        }}
+                        className="me"
+                      >
+                        <i
+                          onClick={() => handleDeleteMessage(index)}
+                          className="icon clickable fa fa-ellipsis-v right"
+                          aria-hidden="true"
+                          style={{
+                            paddingRight: "300px",
+                            paddingLeft: "20px",
+                          }}
+                        ></i>
+                        {message.mes}
+                      </td>
+                    </>
+                  )}
+                </tr>
+              ))
             )}
           </tbody>
         </table>
