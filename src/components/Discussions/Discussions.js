@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {createContext, useEffect, useState} from "react";
 import './Discussions.scss'
 import UserDicusstion  from "../UserDicusstion";
 import { Link } from "react-router-dom";
@@ -14,7 +14,7 @@ const Discussions = () => {
 
     // Xử lý khi mở kết nối WebSocket
     webSocket.onopen = () => {
-      console.log("WebSocket connected");
+      // console.log("WebSocket connected");
       // Gửi thông tin đăng nhập
       const loginData = {
         action: "onchat",
@@ -27,18 +27,18 @@ const Discussions = () => {
         },
       };
       const JsonLogin = JSON.stringify(loginData);
-      console.log("Chuỗi JSON LOGIN:", JsonLogin);
+      // console.log("Chuỗi JSON LOGIN:", JsonLogin);
       webSocket.send(JsonLogin);
     };
 
     // Xử lý khi nhận được tin nhắn từ WebSocket
     webSocket.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      console.log("Received message:", message);
+      // console.log("Received message:", message);
 
       if (message.event === "LOGIN") {
         if (message.status === "success") {
-          console.log("Đăng nhập thành công");
+          // console.log("Đăng nhập thành công");
           // Gửi yêu cầu lấy danh sách người dùng
           const getUserList = {
             action: "onchat",
@@ -47,7 +47,7 @@ const Discussions = () => {
             },
           };
           const JsonListUser = JSON.stringify(getUserList);
-          console.log("Chuỗi JSON GET_USER_LIST:", JsonListUser);
+          // console.log("Chuỗi JSON GET_USER_LIST:", JsonListUser);
           webSocket.send(JsonListUser);
         } else {
           alert(
@@ -57,10 +57,10 @@ const Discussions = () => {
         }
       } else if (message.event === "GET_USER_LIST") {
         if (message.status === "success") {
-          console.log("Danh sách người dùng nhận được:", message.data);
+          // console.log("Danh sách người dùng nhận được:", message.data);
           setUsers(message.data); // Cập nhật danh sách người dùng vào state
         } else {
-          console.error("Lấy danh sách người dùng thất bại:", message.mes);
+          // console.error("Lấy danh sách người dùng thất bại:", message.mes);
         }
       }
     };
@@ -73,12 +73,13 @@ const Discussions = () => {
 
     // Xử lý khi đóng kết nối WebSocket
     webSocket.onclose = () => {
-      console.log("WebSocket connection closed");
+      // console.log("WebSocket connection closed");
     };
 
     // Cleanup effect: Đóng kết nối WebSocket khi component unmount
     return () => {
-      webSocket.close();
+      // webSocket.close();
+      console.log('ngat ket noi ws disscusion 82')
     };
   }, []); // Dependency array rỗng để chỉ chạy một lần khi component mount
     return(

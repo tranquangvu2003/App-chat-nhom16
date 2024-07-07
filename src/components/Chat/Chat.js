@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import "./Chat.scss";
 import { useLocation } from "react-router-dom";
 
@@ -6,13 +6,15 @@ const Chat = () => {
   const location = useLocation();
   const [messages, setMessages] = useState([]);
   const [ws, setWs] = useState(null);
-  const [msg, setMsg] = useState("");
+  const [ msg, setMsg] = useState("");
   const tbodyRef = useRef(null); // Tham chiếu cho tbody
   const currentUserString = localStorage.getItem("currentUser");
   const currentUser = JSON.parse(currentUserString);
   const [person, setPerson] = useState("");
   const [loading, setLoading] = useState(false); // Trạng thái loading
 
+
+  //update chat
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const nameParam = queryParams.get("person");
@@ -90,9 +92,29 @@ const Chat = () => {
           webSocket.close();
         }
       } else if (message.event === "GET_PEOPLE_CHAT_MES") {
+        if(message.data.length !==0){
         setMessages(message.data.reverse());
         setLoading(false); // Kết thúc trạng thái loading
         // console.log("Danh sách tin nhắn chat của người dùng:", message.data);
+        }else{
+          // Thiếu hiển thị useer
+          const queryParams = new URLSearchParams(location.search);
+          const nameParam = queryParams.get("person");
+          // console.log("Name from query string:", nameParam);
+          const getRoomChatMes = {
+            action: "onchat",
+            data: {
+              event: "GET_ROOM_CHAT_MES",
+              data: {
+                name: nameParam,
+                page: 1,
+              },
+            },
+          };
+          const JsoGetRoomChatMes = JSON.stringify(getRoomChatMes);
+          // console.log("Chuỗi JSON getRoomChatMes:", JsoGetRoomChatMes);
+          webSocket.send(JsoGetRoomChatMes);
+        }
       } else if (message.event === "SEND_CHAT") {
         const newRow = document.createElement("tr");
         newRow.style.height = "50px";
@@ -102,6 +124,14 @@ const Chat = () => {
         // Xử lý khi nhận được tin nhắn đã gửi thành công
         // console.log("Tin nhắn đã gửi thành công:", message);
         // Cập nhật danh sách tin nhắn nếu cần
+      }else if (message.event === "GET_ROOM_CHAT_MES") {
+        if (typeof message.data === 'undefined' || typeof message.data.chatData === 'undefined') {
+          // console.log('message.data or message.data.chatData is undefined');
+          setMessages([]);
+        } else {
+          setMessages(message.data.chatData);
+        }
+        setLoading(false);
       }
     };
 

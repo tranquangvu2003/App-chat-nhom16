@@ -36,13 +36,13 @@ const Register = ({ setWebSocket }) => {
         }
       };
       const JsonLogin = JSON.stringify(loginData);
-      console.log('Chuỗi JSON login:', JsonLogin);
+      // console.log('Chuỗi JSON login:', JsonLogin);
       ws.send(JsonLogin);
     };
 
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      console.log('Received message:', message);
+      // console.log('Received message:', message);
       if (message.status === 'success') {
         // Đăng nhập thành công
         alert(message.data);
@@ -56,7 +56,7 @@ const Register = ({ setWebSocket }) => {
     };
 
     ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
+      // console.error('WebSocket error:', error);
       alert('Lỗi kết nối WebSocket!');
     };
   };

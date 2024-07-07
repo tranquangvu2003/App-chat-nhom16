@@ -1,60 +1,59 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../Login.scss';
-import {Link} from "react-router-dom";
-import Register from "../Register/Register";
-const LogIn = ({ setWebSocket }) => {
+import { Link } from "react-router-dom";
+import { UserContext } from "../UserContextProvider";
+
+const LogIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { ws, createWebSocket } = useContext(UserContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (ws) {
+      ws.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        console.log('Received message:', message);
+        if (message.status === 'success') {
+          // Đăng nhập thành công
+          alert('Đăng nhập thành công!');
+          localStorage.setItem(
+              "currentUser",
+              JSON.stringify({ username: username, password: password })
+          );
+          navigate('/home');
+        } else {
+          // Đăng nhập thất bại
+          alert('Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập.');
+          ws.close();
+        }
+      };
+    }
+  }, [ws, username, password, navigate]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!ws || ws.readyState !== WebSocket.OPEN) {
+      alert('WebSocket chưa được khởi tạo hoặc chưa kết nối! Khởi tạo lại...');
+      createWebSocket();
+      return;
+    }
 
-    // Thiết lập kết nối WebSocket
-    const ws = new WebSocket('ws://140.238.54.136:8080/chat/chat');
-
-    ws.onopen = () => {
-      console.log('WebSocket connected');
-      // Gửi thông tin đăng nhập
-      const loginData = {
-        action: 'onchat',
+    // Gửi thông tin đăng nhập
+    const loginData = {
+      action: 'onchat',
+      data: {
+        event: "LOGIN",
         data: {
-          event: "LOGIN",
-          data: {
-            user: username,
-            pass: password
-          }
+          user: username,
+          pass: password
         }
-      };
-      const JsonLogin = JSON.stringify(loginData);
-      console.log('Chuỗi JSON login:', JsonLogin);
-      ws.send(JsonLogin);
-    };
-
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      console.log('Received message:', message);
-      if (message.status === 'success') {
-        // Đăng nhập thành công
-        alert('Đăng nhập thành công!');
-        <LogIn setWebSocket={setWebSocket} />
-        localStorage.setItem(
-          "currentUser",
-          JSON.stringify({ username: username, password: password})
-        );
-        navigate('/home');
-      } else {
-        // Đăng nhập thất bại
-        alert('Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập.');
-        ws.close();
       }
     };
-
-    ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
-      alert('Lỗi kết nối WebSocket!');
-    };
+    const JsonLogin = JSON.stringify(loginData);
+    console.log('Chuỗi JSON login:', JsonLogin);
+    ws.send(JsonLogin);
   };
 
   return (
