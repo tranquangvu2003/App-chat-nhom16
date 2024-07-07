@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../Login.scss';
-
+import {Link} from "react-router-dom";
+import Register from "../Register/Register";
 const LogIn = ({ setWebSocket }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -84,6 +85,9 @@ const LogIn = ({ setWebSocket }) => {
           </div>
           <button type="submit">Đăng Nhập</button>
         </form>
+        <div className="btn-register">
+          <button><Link to="/register">Đăng kí</Link></button>
+        </div>
       </div>
   );
 };
