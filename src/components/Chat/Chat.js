@@ -17,7 +17,7 @@ const Chat = () => {
     const queryParams = new URLSearchParams(location.search);
     const nameParam = queryParams.get("person");
     setPerson(nameParam);
-    console.log("Name from query string:", nameParam);
+    // console.log("Name from query string:", nameParam);
 
     // Xóa tin nhắn cũ trước khi yêu cầu tin nhắn mới
     setMessages([]);
@@ -36,7 +36,7 @@ const Chat = () => {
         },
       };
       const JsonGetPeopleChatMes = JSON.stringify(getPeopleChatMes);
-      console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
+      // console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
       ws.send(JsonGetPeopleChatMes);
     }
   }, [location.search, ws]);
@@ -46,7 +46,7 @@ const Chat = () => {
     setWs(webSocket);
 
     webSocket.onopen = () => {
-      console.log("WebSocket connected");
+      // console.log("WebSocket connected");
       const loginData = {
         action: "onchat",
         data: {
@@ -58,14 +58,14 @@ const Chat = () => {
         },
       };
       const JsonLogin = JSON.stringify(loginData);
-      console.log("Chuỗi JSON LOGIN:", JsonLogin);
+      // console.log("Chuỗi JSON LOGIN:", JsonLogin);
       webSocket.send(JsonLogin);
     };
 
     webSocket.onmessage = (event) => {
 
       const message = JSON.parse(event.data);
-      console.log("Received message:", message);
+      // console.log("Received message:", message);
      
       if (message.event === "LOGIN") {
         if (message.status === "success") {
@@ -81,7 +81,7 @@ const Chat = () => {
             },
           };
           const JsonGetPeopleChatMes = JSON.stringify(getPeopleChatMes);
-          console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
+          // console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
           webSocket.send(JsonGetPeopleChatMes);
         } else {
           alert(
@@ -92,7 +92,7 @@ const Chat = () => {
       } else if (message.event === "GET_PEOPLE_CHAT_MES") {
         setMessages(message.data.reverse());
         setLoading(false); // Kết thúc trạng thái loading
-        console.log("Danh sách tin nhắn chat của người dùng:", message.data);
+        // console.log("Danh sách tin nhắn chat của người dùng:", message.data);
       } else if (message.event === "SEND_CHAT") {
         const newRow = document.createElement("tr");
         newRow.style.height = "50px";
@@ -100,18 +100,18 @@ const Chat = () => {
         tbodyRef.current.append(newRow);
         tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
         // Xử lý khi nhận được tin nhắn đã gửi thành công
-        console.log("Tin nhắn đã gửi thành công:", message);
+        // console.log("Tin nhắn đã gửi thành công:", message);
         // Cập nhật danh sách tin nhắn nếu cần
       }
     };
 
     webSocket.onerror = (error) => {
-      console.error("WebSocket error:", error);
+      // console.error("WebSocket error:", error);
       alert("Lỗi kết nối WebSocket!");
     };
 
     webSocket.onclose = () => {
-      console.log("WebSocket connection closed");
+      // console.log("WebSocket connection closed");
     };
 
     return () => {
@@ -148,7 +148,7 @@ const Chat = () => {
         mes: msg,
       };
       const JsonSendChat = JSON.stringify(sendChatData);
-      console.log("Chuỗi JSON JsonSendChat:", JsonSendChat);
+      // console.log("Chuỗi JSON JsonSendChat:", JsonSendChat);
 
       ws.send(JsonSendChat); // Gửi tin nhắn
 
@@ -162,7 +162,7 @@ const Chat = () => {
       // Reset giá trị của input
       setMsg("");
     } else {
-      console.error("WebSocket is not connected.");
+      // console.error("WebSocket is not connected.");
     }
   };
 
