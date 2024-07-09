@@ -67,7 +67,7 @@ const Chat = () => {
     webSocket.onmessage = (event) => {
 
       const message = JSON.parse(event.data);
-      // console.log("Received message:", message);
+      console.log("Received message:", message);
      
       if (message.event === "LOGIN") {
         if (message.status === "success") {
