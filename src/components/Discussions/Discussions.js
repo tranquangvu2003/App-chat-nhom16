@@ -1,21 +1,42 @@
-import React, {createContext, useEffect, useState} from "react";
-import './Discussions.scss'
-import UserDicusstion  from "../UserDicusstion";
+import React, { useEffect, useState } from "react";
+import './Discussions.scss';
+import UserDicusstion from "../UserDicusstion";
 import { Link } from "react-router-dom";
+
+const TodoListGroup = ({ style, submitNewGroup }) => {
+  const [newG, setNewG] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    submitNewGroup(newG);
+    setNewG('');
+  };
+
+  return (
+      <form style={style} onSubmit={handleSubmit}>
+        <div>Dòng 1 của TodoList</div>
+        <input
+            placeholder="new Group"
+            value={newG}
+            onChange={(e) => setNewG(e.target.value)}
+        />
+        <button type="submit">Add</button>
+      </form>
+  );
+};
+
 const Discussions = () => {
   const [users, setUsers] = useState([]);
-  const [ws, setWs] = useState(null); // State để lưu đối tượng WebSocket
+  const [ws, setWs] = useState(null);
+  const [showTodoList, setShowTodoList] = useState(false);
   const currentUserString = localStorage.getItem("currentUser");
   const currentUser = JSON.parse(currentUserString);
-  useEffect(() => {
-    // Khởi tạo kết nối WebSocket khi component được mount
-    const webSocket = new WebSocket("ws://140.238.54.136:8080/chat/chat");
-    setWs(webSocket); // Lưu đối tượng WebSocket vào state
 
-    // Xử lý khi mở kết nối WebSocket
+  useEffect(() => {
+    const webSocket = new WebSocket("ws://140.238.54.136:8080/chat/chat");
+
     webSocket.onopen = () => {
-      // console.log("WebSocket connected");
-      // Gửi thông tin đăng nhập
+      setWs(webSocket);
       const loginData = {
         action: "onchat",
         data: {
@@ -27,19 +48,15 @@ const Discussions = () => {
         },
       };
       const JsonLogin = JSON.stringify(loginData);
-      // console.log("Chuỗi JSON LOGIN:", JsonLogin);
       webSocket.send(JsonLogin);
     };
 
-    // Xử lý khi nhận được tin nhắn từ WebSocket
     webSocket.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      // console.log("Received message:", message);
+      console.log("Received message:", message);
 
       if (message.event === "LOGIN") {
         if (message.status === "success") {
-          // console.log("Đăng nhập thành công");
-          // Gửi yêu cầu lấy danh sách người dùng
           const getUserList = {
             action: "onchat",
             data: {
@@ -47,69 +64,99 @@ const Discussions = () => {
             },
           };
           const JsonListUser = JSON.stringify(getUserList);
-          // console.log("Chuỗi JSON GET_USER_LIST:", JsonListUser);
           webSocket.send(JsonListUser);
         } else {
-          alert(
-            "Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập."
-          );
-          webSocket.close(); // Đóng kết nối WebSocket nếu đăng nhập thất bại
+          alert("Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập.");
         }
       } else if (message.event === "GET_USER_LIST") {
         if (message.status === "success") {
-          // console.log("Danh sách người dùng nhận được:", message.data);
-          setUsers(message.data); // Cập nhật danh sách người dùng vào state
+          setUsers(message.data);
         } else {
-          // console.error("Lấy danh sách người dùng thất bại:", message.mes);
+          console.error("Lấy danh sách người dùng thất bại:", message.mes);
+        }
+      } else if (message.event === "CREATE_ROOM") {
+        if (message.status === "success") {
+          console.log('Phòng đã được tạo thành công:', message.data);
+          const getUserList = {
+            action: "onchat",
+            data: {
+              event: "GET_USER_LIST",
+            },
+          };
+          const JsonListUser = JSON.stringify(getUserList);
+          webSocket.send(JsonListUser);
+        } else {
+          console.error("Tạo phòng thất bại:", message.mes);
         }
       }
     };
 
-    // Xử lý khi có lỗi kết nối WebSocket
-    // webSocket.onerror = (error) => {
-    //   console.error("WebSocket error:", error);
-    //   alert("Lỗi kết nối WebSocket!");
-    // };
+    webSocket.onerror = (error) => {
+      console.error("WebSocket error:", error);
+      alert("Lỗi kết nối WebSocket!");
+      setWs(null);
+    };
 
-    // Xử lý khi đóng kết nối WebSocket
     webSocket.onclose = () => {
-      // console.log("WebSocket connection closed");
+      console.log("WebSocket connection closed");
+      setWs(null);
     };
 
-    // Cleanup effect: Đóng kết nối WebSocket khi component unmount
     return () => {
-      // webSocket.close();
-      console.log('ngat ket noi ws disscusion 82')
+      if (webSocket.readyState === WebSocket.OPEN) {
+        // webSocket.close();
+      }
+      console.log('Ngắt kết nối WebSocket');
     };
-  }, []); // Dependency array rỗng để chỉ chạy một lần khi component mount
-    return(
-        <>
-             <section className="discussions">
-            <div className="discussion search">
-              <div className="searchbar">
-                <i className="fa fa-search" aria-hidden="true"></i>
-                <input type="text" placeholder="Search..." />
-              </div>
-              <div className="buttons">
-                <button className="btn-add-member">
-                  <i className="fa fa-user-plus" aria-hidden="true"></i>
-                </button>
-                <button className="btn-add-group">
-                  <i className="fa fa-users" aria-hidden="true"></i>
-                </button>
-              </div>
+  }, [currentUser.username, currentUser.password]);
+
+  const submitNewGroup = (groupName) => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      const sendGroupData = {
+        action: "onchat",
+        data: {
+          event: "CREATE_ROOM",
+          data: {
+            name: groupName
+          }
+        }
+      };
+      const jsonNewG = JSON.stringify(sendGroupData);
+      ws.send(jsonNewG);
+      console.log('Gửi yêu cầu tạo nhóm:', jsonNewG);
+    } else {
+      console.error('WebSocket không sẵn sàng hoặc đã đóng.');
+    }
+  };
+
+  return (
+      <>
+        <section className="discussions">
+          <div className="discussion search">
+            <div className="searchbar">
+              <i className="fa fa-search" aria-hidden="true"></i>
+              <input type="text" placeholder="Search..." />
             </div>
-       
-          
-                {users.map((user, index) => (
-                  <Link to={`/home?person=${user.name}`} key={index}><UserDicusstion name={user.name} /></Link>
-                  
-                 
-                ))}
-           
-          </section>
-        </>
-    )
-}
+            <div className="buttons">
+              <button className="btn-add-member">
+                <i className="fa fa-user-plus" aria-hidden="true"></i>
+              </button>
+              <button onClick={() => setShowTodoList(!showTodoList)} className="btn-add-group">
+                <i className="fa fa-users" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+
+          {users.map((user, index) => (
+              <Link to={`/home?person=${user.name}`} key={index}>
+                <UserDicusstion name={user.name} />
+              </Link>
+          ))}
+
+          {showTodoList && <TodoListGroup style={{ position: 'fixed', left: '28%', top: '15%' }} submitNewGroup={submitNewGroup} />}
+        </section>
+      </>
+  );
+};
 
 export default Discussions;

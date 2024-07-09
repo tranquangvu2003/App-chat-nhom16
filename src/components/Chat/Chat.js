@@ -140,13 +140,14 @@ const Chat = () => {
       alert("Lỗi kết nối WebSocket!");
     };
 
-    webSocket.onclose = () => {
-      // console.log("WebSocket connection closed");
-    };
+    // webSocket.onclose = () => {
+    //   // console.log("WebSocket connection closed");
+    // };
 
     return () => {
       if (ws) {
-        ws.close();
+        // ws.close();
+        console.log("đóng wsk 150 chatjs")
       }
     };
   }, []);
