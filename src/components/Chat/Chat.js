@@ -67,7 +67,7 @@ const Chat = () => {
     webSocket.onmessage = (event) => {
 
       const message = JSON.parse(event.data);
-      // console.log("Received message:", message);
+      console.log("Received message:", message);
      
       if (message.event === "LOGIN") {
         if (message.status === "success") {
@@ -140,14 +140,13 @@ const Chat = () => {
       alert("Lỗi kết nối WebSocket!");
     };
 
-    // webSocket.onclose = () => {
-    //   // console.log("WebSocket connection closed");
-    // };
+    webSocket.onclose = () => {
+      // console.log("WebSocket connection closed");
+    };
 
     return () => {
       if (ws) {
-        // ws.close();
-        console.log("đóng wsk 150 chatjs")
+        ws.close();
       }
     };
   }, []);

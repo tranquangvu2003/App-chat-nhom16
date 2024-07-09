@@ -14,7 +14,7 @@ const TodoListGroup = ({ style, submitNewGroup }) => {
 
   return (
       <form style={style} onSubmit={handleSubmit}>
-        <div>Dòng 1 của TodoList</div>
+        <div>Tạo group</div>
         <input
             placeholder="new Group"
             value={newG}
@@ -25,10 +25,33 @@ const TodoListGroup = ({ style, submitNewGroup }) => {
   );
 };
 
+const JoinGroup = ({ style, submitJoinGroup }) => {
+  const [joinG, setJoinG] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    submitJoinGroup(joinG);
+    setJoinG('');
+  };
+
+  return (
+      <form style={style} onSubmit={handleSubmit}>
+        <div>Join group</div>
+        <input
+            placeholder="join Group"
+            value={joinG}
+            onChange={(e) => setJoinG(e.target.value)}
+        />
+        <button type="submit">Join</button>
+      </form>
+  );
+};
+
 const Discussions = () => {
   const [users, setUsers] = useState([]);
   const [ws, setWs] = useState(null);
   const [showTodoList, setShowTodoList] = useState(false);
+  const [showJonGr, setShowJonGr] = useState(false);
   const currentUserString = localStorage.getItem("currentUser");
   const currentUser = JSON.parse(currentUserString);
 
@@ -77,6 +100,7 @@ const Discussions = () => {
       } else if (message.event === "CREATE_ROOM") {
         if (message.status === "success") {
           console.log('Phòng đã được tạo thành công:', message.data);
+          setShowTodoList(false)
           const getUserList = {
             action: "onchat",
             data: {
@@ -88,6 +112,21 @@ const Discussions = () => {
         } else {
           console.error("Tạo phòng thất bại:", message.mes);
         }
+      } else if (message.event === "JOIN_ROOM") {
+        if (message.status === "success") {
+          console.log('Tham gia phòng thành công:', message.data);
+          setShowJonGr(false)
+          const getUserList = {
+            action: "onchat",
+            data: {
+              event: "GET_USER_LIST",
+            },
+          };
+          const JsonListUser = JSON.stringify(getUserList);
+          webSocket.send(JsonListUser);
+        } else {
+          console.error("Tham gia phòng thất bại:", message.mes);
+        }
       }
     };
 
@@ -97,8 +136,8 @@ const Discussions = () => {
       setWs(null);
     };
 
-    webSocket.onclose = () => {
-      console.log("WebSocket connection closed");
+    webSocket.onclose = (event) => {
+      console.log("WebSocket connection closed:", event.code, event.reason);
       setWs(null);
     };
 
@@ -124,7 +163,27 @@ const Discussions = () => {
       const jsonNewG = JSON.stringify(sendGroupData);
       ws.send(jsonNewG);
       console.log('Gửi yêu cầu tạo nhóm:', jsonNewG);
-    } else {
+    }else {
+      console.error('WebSocket không sẵn sàng hoặc đã đóng.');
+    }
+  };
+
+  const submitJoinGroup = (groupName) => {
+    console.log('ws',ws)
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      const sendJoinGroupData = {
+        action: "onchat",
+        data: {
+          event: "JOIN_ROOM",
+          data: {
+            name: groupName
+          }
+        }
+      };
+      const jsonG = JSON.stringify(sendJoinGroupData);
+      ws.send(jsonG);
+      console.log('Gửi yêu cầu tham gia nhóm:', jsonG);
+    }else {
       console.error('WebSocket không sẵn sàng hoặc đã đóng.');
     }
   };
@@ -138,10 +197,10 @@ const Discussions = () => {
               <input type="text" placeholder="Search..." />
             </div>
             <div className="buttons">
-              <button className="btn-add-member">
+              <button onClick={() => {setShowJonGr(!showJonGr); setShowTodoList(false)}} className="btn-add-member">
                 <i className="fa fa-user-plus" aria-hidden="true"></i>
               </button>
-              <button onClick={() => setShowTodoList(!showTodoList)} className="btn-add-group">
+              <button onClick={() => {setShowJonGr(false); setShowTodoList(!showTodoList)}} className="btn-add-group">
                 <i className="fa fa-users" aria-hidden="true"></i>
               </button>
             </div>
@@ -153,7 +212,8 @@ const Discussions = () => {
               </Link>
           ))}
 
-          {showTodoList && <TodoListGroup style={{ position: 'fixed', left: '28%', top: '15%' }} submitNewGroup={submitNewGroup} />}
+          {!showJonGr && showTodoList && <TodoListGroup style={{ position: 'fixed', left: '28%', top: '15%' }} submitNewGroup={submitNewGroup} />}
+          {showJonGr && !showTodoList && <JoinGroup style={{ position: 'fixed', left: '20%', top: '15%' }} submitJoinGroup={submitJoinGroup} />}
         </section>
       </>
   );
