@@ -2,7 +2,7 @@ import React from "react";
 
 class UserDicusstion extends React.Component {
   render() {
-    const { name, message, status } = this.props;
+    const { name, message, type } = this.props;
 
     return (
       <div className="discussion message-active">
@@ -19,7 +19,7 @@ class UserDicusstion extends React.Component {
           <p className="name">{name}</p>
           <p className="message">aaa</p>
         </div>
-        <div className="status">{status}</div>
+        <div className="status">{type === 0 ? 'people' : 'room' }</div>
       </div>
     );
   }

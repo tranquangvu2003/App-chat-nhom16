@@ -8,6 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Chat/Chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Chat/Chat.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/UserDicusstion.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/UserDicusstion.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +79,7 @@
       <workItem from="1720279742362" duration="8986000" />
       <workItem from="1720309806066" duration="20531000" />
       <workItem from="1720364977308" duration="7884000" />
-      <workItem from="1720496166448" duration="23887000" />
+      <workItem from="1720496166448" duration="27249000" />
     </task>
     <servers />
   </component>

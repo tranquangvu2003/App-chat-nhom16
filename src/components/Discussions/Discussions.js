@@ -207,8 +207,8 @@ const Discussions = () => {
           </div>
 
           {users.map((user, index) => (
-              <Link to={`/home?person=${user.name}`} key={index}>
-                <UserDicusstion name={user.name} />
+              <Link to={`/home?person=${user.name}&type=${user.type}`} key={index}>
+                <UserDicusstion name={user.name} type={user.type}/>
               </Link>
           ))}
 
