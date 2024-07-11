@@ -18,30 +18,48 @@ const Chat = () => {
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const nameParam = queryParams.get("person");
+    const typeParam = queryParams.get("type");
     setPerson(nameParam);
-    // console.log("Name from query string:", nameParam);
 
-    // Xóa tin nhắn cũ trước khi yêu cầu tin nhắn mới
     setMessages([]);
-    setLoading(true); // Bắt đầu trạng thái loading
+    setLoading(true);
 
     // Cập nhật lại tin nhắn khi person thay đổi
     if (ws && nameParam && ws.readyState === WebSocket.OPEN) {
-      const getPeopleChatMes = {
-        action: "onchat",
-        data: {
-          event: "GET_PEOPLE_CHAT_MES",
+      if(typeParam === "0"){
+        const getPeopleChatMes = {
+          action: "onchat",
           data: {
-            name: nameParam,
-            page: 1,
+            event: "GET_PEOPLE_CHAT_MES",
+            data: {
+              name: nameParam,
+              page: 1,
+            },
           },
-        },
-      };
-      const JsonGetPeopleChatMes = JSON.stringify(getPeopleChatMes);
-      // console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
-      ws.send(JsonGetPeopleChatMes);
+        };
+        const JsonGetPeopleChatMes = JSON.stringify(getPeopleChatMes);
+        // console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
+        ws.send(JsonGetPeopleChatMes);
+      } else if(typeParam === "1"){
+        const getRoomChatMes = {
+          action: "onchat",
+          data: {
+            event: "GET_ROOM_CHAT_MES",
+            data: {
+              name: nameParam,
+              page: 1,
+            },
+          },
+        };
+        const JsoGetRoomChatMes = JSON.stringify(getRoomChatMes);
+        // console.log("Chuỗi JSON getRoomChatMes:", JsoGetRoomChatMes);
+        ws.send(JsoGetRoomChatMes);
+      }else {
+        console.log("err,type")
+      }
     }
   }, [location.search, ws]);
+
 
   useEffect(() => {
     const webSocket = new WebSocket("ws://140.238.54.136:8080/chat/chat");
@@ -92,29 +110,9 @@ const Chat = () => {
           webSocket.close();
         }
       } else if (message.event === "GET_PEOPLE_CHAT_MES") {
-        if(message.data.length !==0){
         setMessages(message.data.reverse());
         setLoading(false); // Kết thúc trạng thái loading
         // console.log("Danh sách tin nhắn chat của người dùng:", message.data);
-        }else{
-          // Thiếu hiển thị useer
-          const queryParams = new URLSearchParams(location.search);
-          const nameParam = queryParams.get("person");
-          // console.log("Name from query string:", nameParam);
-          const getRoomChatMes = {
-            action: "onchat",
-            data: {
-              event: "GET_ROOM_CHAT_MES",
-              data: {
-                name: nameParam,
-                page: 1,
-              },
-            },
-          };
-          const JsoGetRoomChatMes = JSON.stringify(getRoomChatMes);
-          // console.log("Chuỗi JSON getRoomChatMes:", JsoGetRoomChatMes);
-          webSocket.send(JsoGetRoomChatMes);
-        }
       } else if (message.event === "SEND_CHAT") {
         const newRow = document.createElement("tr");
         newRow.style.height = "50px";
@@ -185,6 +183,7 @@ const Chat = () => {
       // Đặt scroll xuống cuối cùng khi có tin nhắn mới
       const newRow = document.createElement("tr");
       newRow.style.height = "50px";
+      newRow.style.color = "red";
       newRow.innerHTML = `<td >&nbsp;</td><td>${msg}</td>`;
       tbodyRef.current.append(newRow);
       tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;

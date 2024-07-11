@@ -3,7 +3,7 @@ import './Discussions.scss';
 import UserDicusstion from "../UserDicusstion";
 import { Link } from "react-router-dom";
 
-const TodoListGroup = ({ style, submitNewGroup }) => {
+const NewGroup = ({ style, submitNewGroup }) => {
   const [newG, setNewG] = useState('');
 
   const handleSubmit = (event) => {
@@ -50,7 +50,7 @@ const JoinGroup = ({ style, submitJoinGroup }) => {
 const Discussions = () => {
   const [users, setUsers] = useState([]);
   const [ws, setWs] = useState(null);
-  const [showTodoList, setShowTodoList] = useState(false);
+  const [showNewGr, setShowNewGr] = useState(false);
   const [showJonGr, setShowJonGr] = useState(false);
   const currentUserString = localStorage.getItem("currentUser");
   const currentUser = JSON.parse(currentUserString);
@@ -100,7 +100,7 @@ const Discussions = () => {
       } else if (message.event === "CREATE_ROOM") {
         if (message.status === "success") {
           console.log('Phòng đã được tạo thành công:', message.data);
-          setShowTodoList(false)
+          setShowNewGr(false)
           const getUserList = {
             action: "onchat",
             data: {
@@ -197,23 +197,23 @@ const Discussions = () => {
               <input type="text" placeholder="Search..." />
             </div>
             <div className="buttons">
-              <button onClick={() => {setShowJonGr(!showJonGr); setShowTodoList(false)}} className="btn-add-member">
+              <button onClick={() => {setShowJonGr(!showJonGr); setShowNewGr(false)}} className="btn-add-member">
                 <i className="fa fa-user-plus" aria-hidden="true"></i>
               </button>
-              <button onClick={() => {setShowJonGr(false); setShowTodoList(!showTodoList)}} className="btn-add-group">
+              <button onClick={() => {setShowJonGr(false); setShowNewGr(!showNewGr)}} className="btn-add-group">
                 <i className="fa fa-users" aria-hidden="true"></i>
               </button>
             </div>
           </div>
 
           {users.map((user, index) => (
-              <Link to={`/home?person=${user.name}`} key={index}>
-                <UserDicusstion name={user.name} />
+              <Link to={`/home?person=${user.name}&type=${user.type}`} key={index}>
+                <UserDicusstion name={user.name} type={user.type}/>
               </Link>
           ))}
 
-          {!showJonGr && showTodoList && <TodoListGroup style={{ position: 'fixed', left: '28%', top: '15%' }} submitNewGroup={submitNewGroup} />}
-          {showJonGr && !showTodoList && <JoinGroup style={{ position: 'fixed', left: '20%', top: '15%' }} submitJoinGroup={submitJoinGroup} />}
+          {!showJonGr && showNewGr && <NewGroup style={{ position: 'fixed', left: '28%', top: '15%' }} submitNewGroup={submitNewGroup} />}
+          {showJonGr && !showNewGr && <JoinGroup style={{ position: 'fixed', left: '20%', top: '15%' }} submitJoinGroup={submitJoinGroup} />}
         </section>
       </>
   );
