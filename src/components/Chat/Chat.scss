@@ -44,6 +44,7 @@
 
     .clickable {
       cursor: pointer;
+     
     }
   }
 
@@ -116,6 +117,8 @@
   }
 
   .footer-chat {
+    position: fixed;
+    width: 530px;
     display: flex;
     align-items: center;
     padding: 20px;
