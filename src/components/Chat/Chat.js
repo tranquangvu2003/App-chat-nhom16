@@ -1,10 +1,5 @@
-<<<<<<< HEAD
+
 import React, { useEffect, useRef, useState, useContext } from "react";
-=======
-
-
-import React, { useEffect, useRef, useState } from "react";
->>>>>>> 1111419f68b8883f4224a86897ca59bb0cce5876
 import "./Chat.scss";
 import { useLocation } from "react-router-dom";
 
