@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-import React, { useEffect, useRef, useState, useContext } from "react";
-=======
-
-
 import React, { useEffect, useRef, useState } from "react";
->>>>>>> 1111419f68b8883f4224a86897ca59bb0cce5876
 import "./Chat.scss";
 import { useLocation } from "react-router-dom";
 
@@ -135,6 +129,20 @@ const Chat = () => {
           setMessages(message.data.chatData);
         }
         setLoading(false);
+      }else if(message.event === "AUTH" && message.mes === 'User not Login'){
+        const loginData = {
+          action: "onchat",
+          data: {
+            event: "LOGIN",
+            data: {
+              user: currentUser.username,
+              pass: currentUser.password,
+            },
+          },
+        };
+        const JsonLogin = JSON.stringify(loginData);
+        // console.log("Chuỗi JSON LOGIN:", JsonLogin);
+        webSocket.send(JsonLogin);
       }
     };
 
@@ -144,7 +152,7 @@ const Chat = () => {
     };
 
     webSocket.onclose = () => {
-      // console.log("WebSocket connection closed");
+      console.log("WebSocket connection closed on chat js");
     };
 
     return () => {
