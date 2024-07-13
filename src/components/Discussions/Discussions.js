@@ -238,7 +238,6 @@ const Discussions = () => {
             console.error("Tham gia phòng thất bại:", messagenewG.mes);
           }
         } else if (messagenewG.event === "GET_USER_LIST") {
-          console.log("Tham gia phòng thất bại:", messagenewG);
           if (messagenewG.status === "success") {
             setUsers(messagenewG.data);
             setDefaultUsers(messagenewG.data); // Set default users list
@@ -293,7 +292,7 @@ const Discussions = () => {
         }}>
           {(searchQuery ? filteredUsers : users).map((user, index) => (
             <Link to={`/home?person=${user.name}&type=${user.type}`} key={index}>
-              <UserDicusstion name={user.name} />
+              <UserDicusstion name={user.name} type={user.type}/>
             </Link>
           ))}
           {searchQuery && filteredUsers.length === 0 && <p>No users found.</p>}
