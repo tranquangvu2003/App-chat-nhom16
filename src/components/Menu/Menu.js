@@ -25,8 +25,11 @@ const Menu = () => {
         console.log('Received message:', message);
         if (message.status === 'success') {
           alert(message.data);
-          closeWebSocket(); // Đóng WebSocket khi đăng xuất thành công
+          // closeWebSocket(); // Đóng WebSocket khi đăng xuất thành công
           navigate('/');
+        }else if (message.event === 'AUTH' && message.mes === 'User not Login'){
+          navigate('/');
+          alert('You are Logout!')
         } else {
           alert('Đã xảy ra lỗi. Vui lòng thử lại');
         }
