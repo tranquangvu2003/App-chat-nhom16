@@ -331,21 +331,6 @@ const Discussions = () => {
         } else {
           alert("Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập.");
         }
-      // } else if (messagenewG.event === "JOIN_ROOM") {
-      //   if (messagenewG.status === "success") {
-      //     console.log('Tham gia phòng thành công:', messagenewG.data);
-      //     const getUserList = {
-      //       action: "onchat",
-      //       data: {
-      //         event: "GET_USER_LIST",
-      //       },
-      //     };
-      //     const JsonListUser = JSON.stringify(getUserList);
-      //     wsk.send(JsonListUser);
-      //     setShowNewC(false)
-      //   } else {
-      //     console.error("Tham gia phòng thất bại:", messagenewG.mes);
-      //   }
       } else if (messagenewG.event === "GET_USER_LIST") {
         console.log("Tham gia phòng thất bại:", messagenewG);
         if (messagenewG.status === "success") {

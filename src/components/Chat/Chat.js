@@ -3,28 +3,37 @@ import "./Chat.scss";
 import { useLocation } from "react-router-dom";
 
 const Chat = () => {
+    // console.log("updataadaaf")
     const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const nameParam = queryParams.get("person");
+    const typeParam = queryParams.get("type")
     const [messages, setMessages] = useState([]);
     const [ws, setWs] = useState(null);
     const [ msg, setMsg] = useState("");
     const tbodyRef = useRef(null); // Tham chiếu cho tbody
     const currentUserString = localStorage.getItem("currentUser");
     const currentUser = JSON.parse(currentUserString);
-    const [person, setPerson] = useState("");
+    const [person, setPerson] = useState(nameParam);
+    const [type, setType] = useState(typeParam);
     const [loading, setLoading] = useState(false); // Trạng thái loading
+    const [own,setOwn] = useState("")
+    const [listMember,setListMember] = useState([])
     //update chat
+    // console.log('type',type)
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const nameParam = queryParams.get("person");
         const typeParam = queryParams.get("type");
         setPerson(nameParam);
-
+        setType(typeParam);
         setMessages([]);
         setLoading(true);
 
         // Cập nhật lại tin nhắn khi person thay đổi
         if (ws && nameParam && ws.readyState === WebSocket.OPEN) {
             if(typeParam === "0"){
+                setType(typeParam)
                 const getPeopleChatMes = {
                     action: "onchat",
                     data: {
@@ -36,9 +45,10 @@ const Chat = () => {
                     },
                 };
                 const JsonGetPeopleChatMes = JSON.stringify(getPeopleChatMes);
-                // console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
+                console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
                 ws.send(JsonGetPeopleChatMes);
             } else if(typeParam === "1"){
+                setType(typeParam)
                 const getRoomChatMes = {
                     action: "onchat",
                     data: {
@@ -85,25 +95,42 @@ const Chat = () => {
             console.log("Received message:", message);
             if (message.event === "LOGIN") {
                 if (message.status === "success") {
-                    // Sau khi đăng nhập thành công, gửi tin nhắn tới person hiện tại
-                    const getPeopleChatMes = {
-                        action: "onchat",
-                        data: {
-                            event: "GET_PEOPLE_CHAT_MES",
+                    if(type === '0'){
+                        // Sau khi đăng nhập thành công, gửi tin nhắn tới person hiện tại
+                        const getPeopleChatMes = {
+                            action: "onchat",
                             data: {
-                                name: person,
-                                page: 1,
+                                event: "GET_PEOPLE_CHAT_MES",
+                                data: {
+                                    name: person,
+                                    page: 1,
+                                },
                             },
-                        },
-                    };
-                    const JsonGetPeopleChatMes = JSON.stringify(getPeopleChatMes);
-                    // console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
-                    webSocket.send(JsonGetPeopleChatMes);
+                        };
+                        const JsonGetPeopleChatMes = JSON.stringify(getPeopleChatMes);
+                        console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
+                        webSocket.send(JsonGetPeopleChatMes);
+                    }else if(type === '1'){
+                        // Sau khi đăng nhập thành công, gửi tin nhắn tới person hiện tại
+                        const getPeopleChatMes = {
+                            action: "onchat",
+                            data: {
+                                event: "GET_ROOM_CHAT_MES",
+                                data: {
+                                    name: person,
+                                    page: 1,
+                                },
+                            },
+                        };
+                        const JsonGetPeopleChatMes = JSON.stringify(getPeopleChatMes);
+                        // console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
+                        webSocket.send(JsonGetPeopleChatMes);
+                    }
                 } else {
                     alert(
                         "Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập."
                     );
-                    webSocket.close();
+                    // webSocket.close();
                 }
             } else if (message.event === "GET_PEOPLE_CHAT_MES") {
                 setMessages(message.data.reverse());
@@ -112,7 +139,13 @@ const Chat = () => {
             } else if (message.event === "SEND_CHAT") {
                 const newRow = document.createElement("tr");
                 newRow.style.height = "50px";
-                newRow.innerHTML = `<td >${message.data.mes}</td><td>&nbsp;</td>`;
+                const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
+                newRow.innerHTML = `<td >${message.data.mes}
+                                           <br/>
+                                            <p className="detailMes"
+                                               style={{fontSize: "10px", color: "black"}}>${currentTime}
+                                            </p>
+                                    </td><td>&nbsp;</td>`;
                 tbodyRef.current.append(newRow);
                 tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
                 // Xử lý khi nhận được tin nhắn đã gửi thành công
@@ -123,7 +156,9 @@ const Chat = () => {
                     // console.log('message.data or message.data.chatData is undefined');
                     setMessages([]);
                 } else {
-                    setMessages(message.data.chatData);
+                    setOwn(message.data.own);
+                    setListMember(message.data.userList)
+                    setMessages(message.data.chatData.reverse());
                 }
                 setLoading(false);
             }else if(message.event === "AUTH" && message.mes === 'User not Login'){
@@ -149,12 +184,12 @@ const Chat = () => {
         };
 
         webSocket.onclose = () => {
-            console.log("WebSocket connection closed on chat js");
+            console.log("WebSocket connection closed on chat.js");
         };
 
         return () => {
             if (ws) {
-                ws.close();
+                // ws.close();
             }
         };
     }, []);
@@ -172,9 +207,9 @@ const Chat = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const queryParams = new URLSearchParams(location.search);
-        const typeParam = queryParams.get("type");
-        if(typeParam === '0'){
+        // const queryParams = new URLSearchParams(location.search);
+        // const typeParam = queryParams.get("type");
+        if(type === '0'){
             if (ws && ws.readyState === WebSocket.OPEN) {
                 const sendChatData = {
                     action: "onchat",
@@ -196,9 +231,15 @@ const Chat = () => {
                 ws.send(JsonSendChat); // Gửi tin nhắn
                 // Đặt scroll xuống cuối cùng khi có tin nhắn mới
                 const newRow = document.createElement("tr");
+                const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
                 newRow.style.height = "50px";
-                newRow.style.color = "red";
-                newRow.innerHTML = `<td >&nbsp;</td><td>${msg}</td>`;
+                newRow.style.color = "blue";
+                newRow.innerHTML = `<td >&nbsp;</td><td>${msg}
+                                          <br/>
+                                            <p className="detailMes"
+                                               style={{fontSize: "10px", color: "black"}}>${currentTime}
+                                            </p>
+                                    </td>`;
                 tbodyRef.current.append(newRow);
                 tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
 
@@ -207,7 +248,7 @@ const Chat = () => {
             } else {
                 console.error("WebSocket is not connected.");
             }
-        }else if(typeParam=== '1' ){
+        }else if(type=== '1' ){
             if (ws && ws.readyState === WebSocket.OPEN) {
                 const sendChatData = {
                     action: "onchat",
@@ -229,9 +270,15 @@ const Chat = () => {
                 ws.send(JsonSendChat); // Gửi tin nhắn
                 // Đặt scroll xuống cuối cùng khi có tin nhắn mới
                 const newRow = document.createElement("tr");
+                const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
                 newRow.style.height = "50px";
-                newRow.style.color = "red";
-                newRow.innerHTML = `<td >&nbsp;</td><td>${msg}</td>`;
+                newRow.style.color = "blue";
+                newRow.innerHTML = `<td >&nbsp;</td><td>${msg}
+                                          <br/>
+                                            <p className="detailMes"
+                                               style={{fontSize: "10px", color: "black"}}>${currentTime}
+                                            </p>
+                                    </td>`;
                 tbodyRef.current.append(newRow);
                 tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
 
@@ -255,7 +302,7 @@ const Chat = () => {
                     ></i>
                 </div>
                 <table
-                    style={{ width: "100%", borderCollapse: "collapse", marginBottom: 10 }}
+                    style={{width: "100%",minWidth:"561px",maxWidth:"600px", borderCollapse: "collapse", marginBottom: 10}}
                 >
                     <tbody
                         id="tbody"
@@ -268,55 +315,122 @@ const Chat = () => {
                     >
                     {loading ? (
                         <tr>
-                            <td colSpan="2" style={{ textAlign: "center" }}>
+                            <td colSpan="2" style={{textAlign: "center"}}>
                                 Loading...
                             </td>
                         </tr>
-                    ) : (
+                    ) : (type === "0" ?(
                         messages.map((message, index) => (
-                            <tr key={index} style={{ height: "50px" }}>
+                            <tr key={index} style={{height: "50px"}}>
                                 {message.name === person ? (
                                     <>
                                         <td style={{
-                                            width: "400px",
+                                            color: "blue",
+                                            width: "200px",
                                             borderRadius: "10px",
                                             boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
                                             backgroundColor: "#f2f2f2",
                                             padding: "20px", // Adjust margin as needed
                                         }} className="you">
                                             {message.mes}
+                                            <>
+                                                <br/>
+
+                                                <p className="detailMes" style={{fontSize: "10px", color: "black"}}>
+                                                    {message.createAt}
+                                                </p>
+                                            </>
                                         </td>
-                                        <td style={{ width: "400px" }} className="me">
+                                        <td style={{width: "200px"}} className="me">
                                             &nbsp;
                                         </td>
                                     </>
                                 ) : (
                                     <>
-                                        <td style={{ width: "400px" }} className="you">
+                                        <td style={{width: "200px"}} className="you">
                                             &nbsp;
                                         </td>
                                         <td style={{
-                                            width: "400px",
+                                            color: "red",
+                                            width: "200px",
                                             borderRadius: "10px",
                                             boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
                                             backgroundColor: "#f2f2f2",
                                             padding: "20px",
-                                            textAlign:"right",
+                                            textAlign: "right",
                                         }} className="me">
                                             {message.mes}
+                                            <br/>
+                                            <p className="detailMes"
+                                               style={{fontSize: "10px", color: "black"}}>
+                                                {message.createAt}
+                                            </p>
                                         </td>
                                     </>
                                 )}
                             </tr>
                         ))
-                    )}
+                    ) : (
+                        messages.map((message, index) => (
+                            <tr key={index} style={{height: "50px"}}>
+                                {message.name !== currentUser.username ? (
+                                    <>
+                                        <td style={{
+                                            color: "blue",
+                                            width: "200px",
+                                            borderRadius: "10px",
+                                            boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
+                                            backgroundColor: "#f2f2f2",
+                                            padding: "20px", // Adjust margin as needed
+                                        }} className="you">
+                                            {message.mes}
+                                                <>
+                                                    <br />
+                                                    <span className="detailMes" style={{fontSize: "10px", color: "black" , whiteSpace: "nowrap"}}>
+                                                        <span className="detailMes"
+                                                           style={{fontSize: "10px", color: "black"}}>
+                                                            {message.name} {"  / "}
+                                                        </span>
+                                                        {message.createAt}
+                                                    </span>
+                                                </>
+                                        </td>
+                                        <td style={{width: "200px"}} className="me">
+                                            &nbsp;
+                                        </td>
+                                    </>
+                                ) : (
+                                    <>
+                                        <td style={{width: "200px"}} className="you">
+                                            &nbsp;
+                                        </td>
+                                        <td style={{
+                                            color: "red",
+                                            width: "200px",
+                                            borderRadius: "10px",
+                                            boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
+                                            backgroundColor: "#f2f2f2",
+                                            padding: "20px",
+                                            textAlign: "right",
+                                        }} className="me">
+                                            {message.mes}
+                                            <br/>
+                                            <p className="detailMes"
+                                               style={{fontSize: "10px", color: "black"}}>{message.createAt}
+                                            </p>
+                                        </td>
+                                    </>
+                                )}
+                            </tr>
+                        ))
+                    ))}
                     </tbody>
                 </table>
                 <form onSubmit={handleSubmit}>
                     <div className="footer-chat">
                         <i
                             className="icon fa fa-smile-o clickable"
-                            style={{ fontSize: "25pt" }}
+                            style={{fontSize: "25pt"}}
                             aria-hidden="true"
                         ></i>
                         <input
@@ -330,6 +444,28 @@ const Chat = () => {
                     </div>
                 </form>
             </section>
+            {type === "1" ? (<div className="table-container">
+                <table className="custom-table">
+                    <thead>
+                    <tr>
+                        <th>Chủ sở hữu <p style={{color: "red"}}>{own}</p></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td className="horizontal-line" colSpan="1"></td>
+                    </tr>
+                    <tr>
+                        <th>Thành viên</th>
+                    </tr>
+                    {listMember.map((item, index) => (
+                        <tr key={index}>
+                            <td>{index}:{item.name}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>) : ""}
         </>
     );
 };
