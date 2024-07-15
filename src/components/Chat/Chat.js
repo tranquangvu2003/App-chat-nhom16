@@ -10,10 +10,8 @@ const Chat = () => {
   const tbodyRef = useRef(null); // Tham chiếu cho tbody
   const currentUserString = localStorage.getItem("currentUser");
   const currentUser = JSON.parse(currentUserString);
-  const [person, setPerson] = useState("21130591");
+  const [person, setPerson] = useState("");
   const [loading, setLoading] = useState(false); // Trạng thái loading
-
-
   //update chat
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -64,7 +62,7 @@ const Chat = () => {
   useEffect(() => {
     const webSocket = new WebSocket("ws://140.238.54.136:8080/chat/chat");
     setWs(webSocket);
-
+    // console.log("websocket thay đổi")
     webSocket.onopen = () => {
       // console.log("WebSocket connected");
       const loginData = {
@@ -85,7 +83,6 @@ const Chat = () => {
     webSocket.onmessage = (event) => {
       const message = JSON.parse(event.data);
       console.log("Received message:", message);
-
       if (message.event === "LOGIN") {
         if (message.status === "success") {
           // Sau khi đăng nhập thành công, gửi tin nhắn tới person hiện tại
@@ -175,7 +172,9 @@ const Chat = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    const queryParams = new URLSearchParams(location.search);
+    const typeParam = queryParams.get("type");
+    if(typeParam === '0'){
     if (ws && ws.readyState === WebSocket.OPEN) {
       const sendChatData = {
         action: "onchat",
@@ -194,9 +193,7 @@ const Chat = () => {
       };
       const JsonSendChat = JSON.stringify(sendChatData);
       // console.log("Chuỗi JSON JsonSendChat:", JsonSendChat);
-
       ws.send(JsonSendChat); // Gửi tin nhắn
-
       // Đặt scroll xuống cuối cùng khi có tin nhắn mới
       const newRow = document.createElement("tr");
       newRow.style.height = "50px";
@@ -208,7 +205,41 @@ const Chat = () => {
       // Reset giá trị của input
       setMsg("");
     } else {
-      // console.error("WebSocket is not connected.");
+      console.error("WebSocket is not connected.");
+    }
+    }else if(typeParam=== '1' ){
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        const sendChatData = {
+          action: "onchat",
+          data: {
+            event: "SEND_CHAT",
+            data: {
+              type: "room",
+              to: person,
+              mes: msg,
+            },
+          },
+        };
+        const newMessage = {
+          name: currentUser.username,
+          mes: msg,
+        };
+        const JsonSendChat = JSON.stringify(sendChatData);
+        // console.log("Chuỗi JSON JsonSendChat:", JsonSendChat);
+        ws.send(JsonSendChat); // Gửi tin nhắn
+        // Đặt scroll xuống cuối cùng khi có tin nhắn mới
+        const newRow = document.createElement("tr");
+        newRow.style.height = "50px";
+        newRow.style.color = "red";
+        newRow.innerHTML = `<td >&nbsp;</td><td>${msg}</td>`;
+        tbodyRef.current.append(newRow);
+        tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
+
+        // Reset giá trị của input
+        setMsg("");
+      } else {
+        console.error("WebSocket is not connected.");
+      }
     }
   };
 
@@ -303,4 +334,4 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default Chat;  

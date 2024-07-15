@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Menu = () => {
   const navigate = useNavigate();
-  const { ws, closeWebSocket } = useContext(UserContext);
+  const { ws } = useContext(UserContext);
 
   const out = {
     action: "onchat",

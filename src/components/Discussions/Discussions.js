@@ -47,9 +47,39 @@ const JoinGroup = ({ style, submitJoinGroup }) => {
   );
 };
 
+
+const NewChat = ({ style, submitNewChat }) => {
+  const [newC, setNewC] = useState('');
+  const [newContent, setNewContent] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    submitNewChat(newC,newContent);
+    setNewC('');
+  };
+
+  return (
+      <form style={style} onSubmit={handleSubmit}>
+        <div>New Chat</div>
+        <input
+            placeholder="Tên người mới"
+            value={newC}
+            onChange={(e) => setNewC(e.target.value)}
+        />
+        <input
+            placeholder="Nội dung"
+            value={newContent}
+            onChange={(e) => setNewContent(e.target.value)}
+        />
+        <button type="submit">Join</button>
+      </form>
+  );
+};
+
 const Discussions = () => {
   const [users, setUsers] = useState([]);
   const [ws, setWs] = useState(null);
+  const [showNewC, setShowNewC] = useState(false);
   const [showJonGr, setShowJonGr] = useState(false);
   const [showTodoList, setShowTodoList] = useState(false); // Assuming this state exists
   const [searchQuery, setSearchQuery] = useState('');
@@ -58,7 +88,6 @@ const Discussions = () => {
   const currentUserString = localStorage.getItem("currentUser");
   const currentUser = JSON.parse(currentUserString);
   const webSocket = new WebSocket("ws://140.238.54.136:8080/chat/chat");
-
   useEffect(() => {
 
     webSocket.onopen = () => {
@@ -169,6 +198,7 @@ const Discussions = () => {
           };
           const JsonListUser = JSON.stringify(getUserList);
           wsk.send(JsonListUser);
+          setShowTodoList(false)
         } else {
           console.error("Tạo phòng thất bại:", messagenewG.mes);
         }
@@ -234,6 +264,7 @@ const Discussions = () => {
             };
             const JsonListUser = JSON.stringify(getUserList);
             wsk.send(JsonListUser);
+            setShowJonGr(false)
           } else {
             console.error("Tham gia phòng thất bại:", messagenewG.mes);
           }
@@ -250,6 +281,84 @@ const Discussions = () => {
           console.error('WebSocket không sẵn sàng hoặc đã đóng.');
         }
       }
+  };
+  const submitNewChat = (newC,newContent) => {
+    const wsk = new WebSocket("ws://140.238.54.136:8080/chat/chat");
+
+    wsk.onopen = () => {
+      const loginData = {
+        action: "onchat",
+        data: {
+          event: "LOGIN",
+          data: {
+            user: currentUser.username,
+            pass: currentUser.password,
+          },
+        },
+      };
+      const JsonLogin = JSON.stringify(loginData);
+      wsk.send(JsonLogin);
+    }
+
+    wsk.onmessage = (event) => {
+      const messagenewG = JSON.parse(event.data);
+      console.log("Received message:", messagenewG);
+      if (messagenewG.event === "LOGIN") {
+        if (messagenewG.status === "success") {
+          const sendJoinGroupData = {
+            action: "onchat",
+            data: {
+              event: "SEND_CHAT",
+              data: {
+                type: "people",
+                to: newC,
+                mes: newContent
+              }
+            }
+          };
+          const jsonG = JSON.stringify(sendJoinGroupData);
+          wsk.send(jsonG);
+          const getUserList = {
+            action: "onchat",
+            data: {
+              event: "GET_USER_LIST",
+            },
+          };
+          const JsonListUser = JSON.stringify(getUserList);
+          wsk.send(JsonListUser);
+          setShowNewC(false)
+          console.log('Gửi yêu cầu newChat:', jsonG);
+        } else {
+          alert("Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập.");
+        }
+      // } else if (messagenewG.event === "JOIN_ROOM") {
+      //   if (messagenewG.status === "success") {
+      //     console.log('Tham gia phòng thành công:', messagenewG.data);
+      //     const getUserList = {
+      //       action: "onchat",
+      //       data: {
+      //         event: "GET_USER_LIST",
+      //       },
+      //     };
+      //     const JsonListUser = JSON.stringify(getUserList);
+      //     wsk.send(JsonListUser);
+      //     setShowNewC(false)
+      //   } else {
+      //     console.error("Tham gia phòng thất bại:", messagenewG.mes);
+      //   }
+      } else if (messagenewG.event === "GET_USER_LIST") {
+        console.log("Tham gia phòng thất bại:", messagenewG);
+        if (messagenewG.status === "success") {
+          setUsers(messagenewG.data);
+          setDefaultUsers(messagenewG.data); // Set default users list
+          wsk.close()
+        } else {
+          console.error("Lấy danh sách người dùng thất bại:", messagenewG.mes);
+        }
+      } else {
+        console.error('WebSocket không sẵn sàng hoặc đã đóng.');
+      }
+    }
   };
 
   const handleSearch = () => {
@@ -274,13 +383,13 @@ const Discussions = () => {
             <button onClick={handleSearch}>Search</button>
           </div>
           <div className="buttons">
-            <button onClick={() => { setShowJonGr(!showJonGr); setShowTodoList(false); }} className="btn-add-member">
+            <button onClick={() => { setShowNewC(!showNewC); setShowTodoList(false);setShowJonGr(false) }} className="btn-add-member">
               <i className="fa-solid fa-comment-medical" aria-hidden="true"></i>
             </button>
-            <button onClick={() => { setShowJonGr(!showJonGr); setShowTodoList(false); }} className="btn-add-member">
+            <button onClick={() => { setShowJonGr(!showJonGr); setShowTodoList(false);setShowNewC(false) }} className="btn-add-member">
               <i className="fa fa-user-plus" aria-hidden="true"></i>
             </button>
-            <button onClick={() => { setShowJonGr(false); setShowTodoList(!showTodoList); }} className="btn-add-group">
+            <button onClick={() => {  setShowTodoList(!showTodoList); setShowJonGr(false);setShowNewC(false) }} className="btn-add-group">
               <i className="fa fa-users" aria-hidden="true"></i>
             </button>
           </div>
@@ -293,13 +402,13 @@ const Discussions = () => {
         }}>
           {(searchQuery ? filteredUsers : users).map((user, index) => (
             <Link to={`/home?person=${user.name}&type=${user.type}`} key={index}>
-              <UserDicusstion name={user.name} />
+              <UserDicusstion name={user.name} type={user.type}/>
             </Link>
           ))}
           {searchQuery && filteredUsers.length === 0 && <p>No users found.</p>}
         </div>
 
-        {!showJonGr && showTodoList && (
+        {!showNewC &&!showJonGr && showTodoList && (
           <NewGroup
             style={{
               position: 'fixed',
@@ -322,7 +431,7 @@ const Discussions = () => {
           />
         )}
 
-        {showJonGr && !showTodoList && (
+        {!showNewC && showJonGr && !showTodoList && (
           <JoinGroup
             style={{
               position: 'fixed',
@@ -342,6 +451,29 @@ const Discussions = () => {
             }}
             submitJoinGroup={submitJoinGroup}
           />
+        )}
+
+
+        {showNewC && !showJonGr && !showTodoList && (
+            <NewChat
+                style={{
+                  position: 'fixed',
+                  left: '29.5%',
+                  top: '12%', // Adjusted position to ensure spacing
+                  transform: 'translateX(-50%)',
+                  backgroundColor: '#FF99CC', // Brighter light gray background
+                  padding: '30px', // Increased padding
+                  borderRadius: '12px', // More rounded corners
+                  boxShadow: '0 6px 12px rgba(0, 0, 0, 0.2)', // Increased shadow
+                  width: '320px', // Increased width
+                  maxWidth: '90vw',
+                  fontSize: '16px',
+                  zIndex: 1000,
+                  border: '1px solid #ddd', // Added border
+                  marginBottom: '40px', // Increased bottom margin for spacing
+                }}
+                submitNewChat={submitNewChat}
+            />
         )}
       </section>
     </>
