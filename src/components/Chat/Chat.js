@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useEffect, useRef, useState } from "react";
+=======
+import React, { useEffect, useRef, useState, useContext } from "react";
+>>>>>>> f3ffddf0b60115450d984c16785686acab292488
 import "./Chat.scss";
 import { useLocation } from "react-router-dom";
 
@@ -16,48 +20,30 @@ const Chat = () => {
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const nameParam = queryParams.get("person");
-    const typeParam = queryParams.get("type");
     setPerson(nameParam);
+    // console.log("Name from query string:", nameParam);
 
+    // Xóa tin nhắn cũ trước khi yêu cầu tin nhắn mới
     setMessages([]);
-    setLoading(true);
+    setLoading(true); // Bắt đầu trạng thái loading
 
     // Cập nhật lại tin nhắn khi person thay đổi
     if (ws && nameParam && ws.readyState === WebSocket.OPEN) {
-      if(typeParam === "0"){
-        const getPeopleChatMes = {
-          action: "onchat",
+      const getPeopleChatMes = {
+        action: "onchat",
+        data: {
+          event: "GET_PEOPLE_CHAT_MES",
           data: {
-            event: "GET_PEOPLE_CHAT_MES",
-            data: {
-              name: nameParam,
-              page: 1,
-            },
+            name: nameParam,
+            page: 1,
           },
-        };
-        const JsonGetPeopleChatMes = JSON.stringify(getPeopleChatMes);
-        // console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
-        ws.send(JsonGetPeopleChatMes);
-      } else if(typeParam === "1"){
-        const getRoomChatMes = {
-          action: "onchat",
-          data: {
-            event: "GET_ROOM_CHAT_MES",
-            data: {
-              name: nameParam,
-              page: 1,
-            },
-          },
-        };
-        const JsoGetRoomChatMes = JSON.stringify(getRoomChatMes);
-        // console.log("Chuỗi JSON getRoomChatMes:", JsoGetRoomChatMes);
-        ws.send(JsoGetRoomChatMes);
-      }else {
-        console.log("err,type")
-      }
+        },
+      };
+      const JsonGetPeopleChatMes = JSON.stringify(getPeopleChatMes);
+      // console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
+      ws.send(JsonGetPeopleChatMes);
     }
   }, [location.search, ws]);
-
 
   useEffect(() => {
     const webSocket = new WebSocket("ws://140.238.54.136:8080/chat/chat");
@@ -81,8 +67,13 @@ const Chat = () => {
     };
 
     webSocket.onmessage = (event) => {
+
       const message = JSON.parse(event.data);
       console.log("Received message:", message);
+<<<<<<< HEAD
+=======
+     
+>>>>>>> f3ffddf0b60115450d984c16785686acab292488
       if (message.event === "LOGIN") {
         if (message.status === "success") {
           // Sau khi đăng nhập thành công, gửi tin nhắn tới person hiện tại
@@ -106,9 +97,29 @@ const Chat = () => {
           webSocket.close();
         }
       } else if (message.event === "GET_PEOPLE_CHAT_MES") {
+        if(message.data.length !==0){
         setMessages(message.data.reverse());
         setLoading(false); // Kết thúc trạng thái loading
         // console.log("Danh sách tin nhắn chat của người dùng:", message.data);
+        }else{
+          // Thiếu hiển thị useer
+          const queryParams = new URLSearchParams(location.search);
+          const nameParam = queryParams.get("person");
+          // console.log("Name from query string:", nameParam);
+          const getRoomChatMes = {
+            action: "onchat",
+            data: {
+              event: "GET_ROOM_CHAT_MES",
+              data: {
+                name: nameParam,
+                page: 1,
+              },
+            },
+          };
+          const JsoGetRoomChatMes = JSON.stringify(getRoomChatMes);
+          // console.log("Chuỗi JSON getRoomChatMes:", JsoGetRoomChatMes);
+          webSocket.send(JsoGetRoomChatMes);
+        }
       } else if (message.event === "SEND_CHAT") {
         const newRow = document.createElement("tr");
         newRow.style.height = "50px";
@@ -166,10 +177,6 @@ const Chat = () => {
     }
   }, [messages]);
 
-  const handleDeleteMessage = (index) => {
-    setMessages((prevMessages) => prevMessages.filter((_, i) => i !== index));
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const queryParams = new URLSearchParams(location.search);
@@ -197,7 +204,6 @@ const Chat = () => {
       // Đặt scroll xuống cuối cùng khi có tin nhắn mới
       const newRow = document.createElement("tr");
       newRow.style.height = "50px";
-      newRow.style.color = "red";
       newRow.innerHTML = `<td >&nbsp;</td><td>${msg}</td>`;
       tbodyRef.current.append(newRow);
       tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
@@ -244,11 +250,84 @@ const Chat = () => {
   };
 
   return (
+<<<<<<< HEAD
       <>
         <section className="chat">
           <div className="header-chat">
             <i className="icon fa fa-user-o" aria-hidden="true"></i>
             <p className="name">{person}</p>
+=======
+    <>
+      <section className="chat">
+        <div className="header-chat">
+          <i className="icon fa fa-user-o" aria-hidden="true"></i>
+          <p className="name">{person}</p>
+          <i
+            className="icon clickable fa fa-ellipsis-h right"
+            aria-hidden="true"
+          ></i>
+        </div>
+        <table
+          style={{ width: "100%", borderCollapse: "collapse", marginBottom: 10 }}
+        >
+          <tbody
+            id="tbody"
+            ref={tbodyRef}
+            style={{
+              overflowY: "auto", // Hiển thị thanh cuộn dọc khi cần thiết
+              maxHeight: "500px", // Chiều cao tối đa của phần tử
+              display: "block", // Thiết lập phần tử trở thành block để có thể sử dụng overflow-y
+            }}
+          >
+            {loading ? (
+              <tr>
+                <td colSpan="2" style={{ textAlign: "center" }}>
+                  Loading...
+                </td>
+              </tr>
+            ) : (
+              messages.map((message, index) => (
+  <tr key={index} style={{ height: "50px" }}>
+    {message.name === person ? (
+      <>
+        <td style={{
+          width: "400px",
+          borderRadius: "10px",
+          boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
+          backgroundColor: "#f2f2f2",
+          padding: "20px", // Adjust margin as needed
+        }} className="you">
+          {message.mes}
+        </td>
+        <td style={{ width: "400px" }} className="me">
+          &nbsp;
+        </td>
+      </>
+    ) : (
+      <>
+        <td style={{ width: "400px" }} className="you">
+          &nbsp;
+        </td>
+        <td style={{
+          width: "400px",
+          borderRadius: "10px",
+          boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
+          backgroundColor: "#f2f2f2",
+          padding: "20px",
+          textAlign:"right",
+        }} className="me">
+          {message.mes}
+        </td>
+      </>
+    )}
+  </tr>
+))
+            )}
+          </tbody>
+        </table>
+        <form onSubmit={handleSubmit}>
+          <div className="footer-chat">
+>>>>>>> f3ffddf0b60115450d984c16785686acab292488
             <i
                 className="icon clickable fa fa-ellipsis-h right"
                 aria-hidden="true"
