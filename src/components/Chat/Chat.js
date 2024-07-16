@@ -168,6 +168,9 @@ const Chat = () => {
                 // console.log("Tin nhắn đã gửi thành công:", message);
                 // Cập nhật danh sách tin nhắn nếu cần
             }else if (message.event === "GET_ROOM_CHAT_MES") {
+                if(document.getElementById('tdMess2')){
+                    document.getElementById('tdMess2').remove();
+                }
                 if (typeof message.data === 'undefined' || typeof message.data.chatData === 'undefined') {
                     // console.log('message.data or message.data.chatData is undefined');
                     setMessages([]);
@@ -292,13 +295,14 @@ const Chat = () => {
                 const newRow = document.createElement("tr");
                 const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
                 newRow.style.height = "50px";
-                newRow.style.color = "blue";
-                newRow.innerHTML = `<td class="tdMess" >&nbsp;</td><td class="tdMess">${msg}
-                                          <br/>
-                                            <p className="detailMes"
-                                               style={{fontSize: "10px", color: "black"}}>${currentTime}
-                                            </p>
-                                    </td>`;
+                newRow.innerHTML = ` <td class="tdMess" style="width: 200px";>&nbsp;</td>
+  <td id="tdMess2" style="width: 200px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px inset; background-color: rgb(242, 242, 242); padding: 20px; text-align: right; color: red;">
+    ${msg}
+    <br/>
+    <p className="detailMes" style="font-size: 10px; color: black;">
+      ${currentTime}
+    </p>
+  </td>`;
                 tbodyRef.current.append(newRow);
                 tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
 
