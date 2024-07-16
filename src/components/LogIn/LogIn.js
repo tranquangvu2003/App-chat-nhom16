@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../Login.scss';
 import { Link } from "react-router-dom";
 import { UserContext } from "../UserContextProvider";
+import {toast} from "react-toastify";
 
 const LogIn = () => {
   const [username, setUsername] = useState('');
@@ -17,7 +18,7 @@ const LogIn = () => {
         console.log('Received message:', message);
         if (message.status === 'success') {
           // Đăng nhập thành công
-          alert('Đăng nhập thành công!');
+          toast.success('Đăng nhập thành công!');
           localStorage.setItem(
               "currentUser",
               JSON.stringify({ username: username, password: password })
@@ -25,8 +26,8 @@ const LogIn = () => {
           navigate('/home');
         } else {
           // Đăng nhập thất bại
-          alert('Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập.');
-          ws.close();
+          toast.error('Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập.');
+          // ws.close();
         }
       };
     }
