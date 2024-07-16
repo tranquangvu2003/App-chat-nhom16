@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Chat.scss";
 import { useLocation } from "react-router-dom";
+import Picker, {SkinTones} from 'emoji-picker-react';
 
 const Chat = () => {
     // console.log("updataadaaf")
@@ -19,6 +20,16 @@ const Chat = () => {
     const [loading, setLoading] = useState(false); // Trạng thái loading
     const [own,setOwn] = useState("")
     const [listMember,setListMember] = useState([])
+    const [showPicker, setShowPicker] = useState(false);
+    const onEmojiClick = (event, emojiObject) => {
+        const emoji = event?.emoji;
+        if (emoji) {
+            setMsg(prevMsg => prevMsg + emoji);
+        }
+        setShowPicker(false); // Ẩn picker emoji sau khi chọn
+    };
+      
+      
     //update chat
     // console.log('type',type)
     useEffect(() => {
@@ -313,7 +324,8 @@ const Chat = () => {
             }
         }
     };
-
+    
+    
     return (
         <>
             <section className="chat">
@@ -451,22 +463,38 @@ const Chat = () => {
                     </tbody>
                 </table>
                 <form onSubmit={handleSubmit}>
-                    <div className="footer-chat">
-                        <i
-                            className="icon fa fa-smile-o clickable"
-                            style={{fontSize: "25pt"}}
-                            aria-hidden="true"
-                        ></i>
-                        <input
-                            type="text"
-                            className="write-message"
-                            placeholder="Type your message here"
-                            value={msg}
-                            onChange={(e) => setMsg(e.target.value)}
+                <div className="footer-chat">
+                  <i
+                        className="icon fa fa-image clickable"
+                        style={{ fontSize: "20pt", cursor: "pointer" }}
+                        aria-hidden="true"
+                    ></i>
+                    {/* Nút emoji */}
+                    <i
+                        className="icon fa fa-smile-o clickable"
+                        style={{ fontSize: "20pt", cursor: "pointer" }}
+                        aria-hidden="true"
+                        onClick={() => setShowPicker(prev => !prev)}
+                    ></i>
+                    {/* Hiển thị picker emoji nếu showPicker là true */}
+                    {showPicker && (
+                        <Picker className="emoji-picker-container"
+                            onEmojiClick={onEmojiClick}
                         />
-                        <button type="submit">Send</button>
-                    </div>
-                </form>
+                    )}
+                    {/* Input tin nhắn */}
+                    <input
+                        type="text"
+                        className="write-message"
+                        placeholder="Type your message here"
+                        value={msg}
+                        onChange={(e) => setMsg(e.target.value)}
+                    />
+                    {/* Nút gửi */}
+                    <button type="submit">Send</button>
+                </div>
+            </form>
+
             </section>
             {type === "1" ? (<div className="table-container">
                 <table className="custom-table">
