@@ -269,7 +269,6 @@ const Discussions = () => {
             console.error("Tham gia phòng thất bại:", messagenewG.mes);
           }
         } else if (messagenewG.event === "GET_USER_LIST") {
-          console.log("Tham gia phòng thất bại:", messagenewG);
           if (messagenewG.status === "success") {
             setUsers(messagenewG.data);
             setDefaultUsers(messagenewG.data); // Set default users list
@@ -346,24 +345,37 @@ const Discussions = () => {
     }
   };
 
-  const handleSearch = () => {
-    const filtered = defaultUsers.filter(user =>
-      user.name && user.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredUsers(filtered);
-  };
+// Function to handle search button click
+const handleSearch = () => {
+  const filtered = defaultUsers.filter(user =>
+    user.name && user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  setFilteredUsers(filtered);
+};
+
+const handleSearchInputChange = (e) => {
+  const query = e.target.value.toLowerCase();
+  setSearchQuery(query);
+
+  // Filter users based on search query
+  const filtered = defaultUsers.filter(user =>
+    user.name && user.name.toLowerCase().includes(query)
+  );
+  setFilteredUsers(filtered);
+};
+  
 
   return (
     <>
       <section className="discussions">
         <div className="discussion search">
-          <div className="searchbar">
+        <div className="searchbar">
             <i className="fa fa-search" aria-hidden="true"></i>
             <input
               type="text"
               placeholder="Search..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchInputChange}
             />
             <button onClick={handleSearch}>Search</button>
           </div>
@@ -386,9 +398,13 @@ const Discussions = () => {
           display: "block",
         }}>
           {(searchQuery ? filteredUsers : users).map((user, index) => (
-            <Link to={`/home?person=${user.name}&type=${user.type}`} key={index}>
-              <UserDicusstion name={user.name} type={user.type}/>
-            </Link>
+            <Link
+          to={`/home?person=${user.name}&type=${user.type}`}
+          key={index}
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
+          <UserDicusstion name={user.name} type={user.type} />
+        </Link>
           ))}
           {searchQuery && filteredUsers.length === 0 && <p>No users found.</p>}
         </div>

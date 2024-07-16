@@ -91,6 +91,9 @@ const Chat = () => {
         };
 
         webSocket.onmessage = (event) => {
+            if(document.getElementById('tdMess1')){
+                document.getElementById('tdMess1').remove();
+            }
             const message = JSON.parse(event.data);
             console.log("Received message:", message);
             if (message.event === "LOGIN") {
@@ -133,6 +136,9 @@ const Chat = () => {
                     // webSocket.close();
                 }
             } else if (message.event === "GET_PEOPLE_CHAT_MES") {
+                if(document.getElementById('tdMess2')){
+                    document.getElementById('tdMess2').remove();
+                }
                 setMessages(message.data.reverse());
                 setLoading(false); // Kết thúc trạng thái loading
                 // console.log("Danh sách tin nhắn chat của người dùng:", message.data);
@@ -140,14 +146,24 @@ const Chat = () => {
                 const newRow = document.createElement("tr");
                 newRow.style.height = "50px";
                 const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
-                newRow.innerHTML = `<td >${message.data.mes}
-                                           <br/>
-                                            <p className="detailMes"
-                                               style={{fontSize: "10px", color: "black"}}>${currentTime}
-                                            </p>
-                                    </td><td>&nbsp;</td>`;
-                tbodyRef.current.append(newRow);
-                tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
+                newRow.innerHTML = `
+  <td id="tdMess1" style="color: blue; width: 200px; border-radius: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); background-color: #f2f2f2; padding: 20px;">
+    ${message.data.mes}
+    <br/>
+    <p className="detailMes" style="font-size: 10px; color: black;">
+      ${currentTime}
+    </p>
+  </td>
+  <td class="tdMess">&nbsp;</td>
+`;
+
+                // console.log(message.data.to);
+                // console.log();
+                if(message.data.to == currentUser.username){
+                    tbodyRef.current.append(newRow);
+                    tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
+                }
+                
                 // Xử lý khi nhận được tin nhắn đã gửi thành công
                 // console.log("Tin nhắn đã gửi thành công:", message);
                 // Cập nhật danh sách tin nhắn nếu cần
@@ -233,13 +249,17 @@ const Chat = () => {
                 const newRow = document.createElement("tr");
                 const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
                 newRow.style.height = "50px";
-                newRow.style.color = "blue";
-                newRow.innerHTML = `<td >&nbsp;</td><td>${msg}
-                                          <br/>
-                                            <p className="detailMes"
-                                               style={{fontSize: "10px", color: "black"}}>${currentTime}
-                                            </p>
-                                    </td>`;
+                newRow.innerHTML = `
+  <td class="tdMess">&nbsp;</td>
+  <td id="tdMess2" style="width: 200px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px inset; background-color: rgb(242, 242, 242); padding: 20px; text-align: right; color: red;">
+    ${msg}
+    <br/>
+    <p className="detailMes" style="font-size: 10px; color: black;">
+      ${currentTime}
+    </p>
+  </td>
+`;
+
                 tbodyRef.current.append(newRow);
                 tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
 
@@ -273,7 +293,7 @@ const Chat = () => {
                 const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
                 newRow.style.height = "50px";
                 newRow.style.color = "blue";
-                newRow.innerHTML = `<td >&nbsp;</td><td>${msg}
+                newRow.innerHTML = `<td class="tdMess" >&nbsp;</td><td class="tdMess">${msg}
                                           <br/>
                                             <p className="detailMes"
                                                style={{fontSize: "10px", color: "black"}}>${currentTime}

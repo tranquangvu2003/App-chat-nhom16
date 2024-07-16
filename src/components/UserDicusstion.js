@@ -16,8 +16,7 @@ class UserDicusstion extends React.Component {
           <div className="online"></div>
         </div>
         <div className="desc-contact">
-          <p className="name">{name}</p>
-          <p className="message">aaa</p>
+        <p className="name">{name}</p>
         </div>
         <div className="status">{type === 0 ? 'people' : 'room' }</div>
       </div>
