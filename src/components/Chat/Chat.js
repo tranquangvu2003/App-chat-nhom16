@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import "./Chat.scss";
 import { useLocation } from "react-router-dom";
 import Picker, {SkinTones} from 'emoji-picker-react';
+import { storage } from "../../firebase/firebase";
+
 
 const Chat = () => {
     // console.log("updataadaaf")
@@ -21,6 +23,8 @@ const Chat = () => {
     const [own,setOwn] = useState("")
     const [listMember,setListMember] = useState([])
     const [showPicker, setShowPicker] = useState(false);
+    const [image, setImage] = useState(null);
+    const [preview, setPreview] = useState(null);
     const onEmojiClick = (event, emojiObject) => {
         const emoji = event?.emoji;
         if (emoji) {
@@ -235,95 +239,159 @@ const Chat = () => {
         setMessages((prevMessages) => prevMessages.filter((_, i) => i !== index));
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          setImage(file);
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setPreview(reader.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+    
+      
+      
+      
+    
     const handleSubmit = (event) => {
         event.preventDefault();
-        // const queryParams = new URLSearchParams(location.search);
-        // const typeParam = queryParams.get("type");
-        if(type === '0'){
-            if (ws && ws.readyState === WebSocket.OPEN) {
-                const sendChatData = {
-                    action: "onchat",
-                    data: {
-                        event: "SEND_CHAT",
-                        data: {
-                            type: "people",
-                            to: person,
-                            mes: msg,
-                        },
-                    },
-                };
-                const newMessage = {
-                    name: currentUser.username,
-                    mes: msg,
-                };
-                const JsonSendChat = JSON.stringify(sendChatData);
-                // console.log("Chuỗi JSON JsonSendChat:", JsonSendChat);
-                ws.send(JsonSendChat); // Gửi tin nhắn
-                // Đặt scroll xuống cuối cùng khi có tin nhắn mới
-                const newRow = document.createElement("tr");
-                const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
-                newRow.style.height = "50px";
-                newRow.innerHTML = `
-  <td class="tdMess">&nbsp;</td>
-  <td id="tdMess2" style="width: 200px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px inset; background-color: rgb(242, 242, 242); padding: 20px; text-align: right; color: red;">
-    ${msg}
-    <br/>
-    <p className="detailMes" style="font-size: 10px; color: black;">
-      ${currentTime}
-    </p>
-  </td>
-`;
 
-                tbodyRef.current.append(newRow);
-                tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
-
-                // Reset giá trị của input
-                setMsg("");
-            } else {
-                console.error("WebSocket is not connected.");
-            }
-        }else if(type=== '1' ){
-            if (ws && ws.readyState === WebSocket.OPEN) {
-                const sendChatData = {
-                    action: "onchat",
-                    data: {
-                        event: "SEND_CHAT",
-                        data: {
-                            type: "room",
-                            to: person,
-                            mes: msg,
-                        },
-                    },
-                };
-                const newMessage = {
-                    name: currentUser.username,
-                    mes: msg,
-                };
-                const JsonSendChat = JSON.stringify(sendChatData);
-                // console.log("Chuỗi JSON JsonSendChat:", JsonSendChat);
-                ws.send(JsonSendChat); // Gửi tin nhắn
-                // Đặt scroll xuống cuối cùng khi có tin nhắn mới
-                const newRow = document.createElement("tr");
-                const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
-                newRow.style.height = "50px";
-                newRow.innerHTML = ` <td class="tdMess" style="width: 200px";>&nbsp;</td>
-  <td id="tdMess2" style="width: 200px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px inset; background-color: rgb(242, 242, 242); padding: 20px; text-align: right; color: red;">
-    ${msg}
-    <br/>
-    <p className="detailMes" style="font-size: 10px; color: black;">
-      ${currentTime}
-    </p>
-  </td>`;
-                tbodyRef.current.append(newRow);
-                tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
-
-                // Reset giá trị của input
-                setMsg("");
-            } else {
-                console.error("WebSocket is not connected.");
-            }
+        if (image) {
+            handleUpload();
+        } else {
+            sendMessage();
         }
     };
+    const handleUpload = async () => {
+        if (image) {
+          const storageRef = storage.ref(); // Ensure storage is properly initialized
+          const fileRef = storageRef.child(image.name); // Create a reference to the image file
+      
+          try {
+            // Upload the image file to Firebase Storage
+            const snapshot = await fileRef.put(image);
+      
+            // Get the download URL for the image
+            const imageUrl = await snapshot.ref.getDownloadURL();
+      
+            // Call sendMessage with imageUrl after successful upload
+            sendMessage(imageUrl);
+      
+            // Clear image and preview states after upload
+            setImage(null);
+            setPreview(null);
+          } catch (error) {
+            console.error("Error uploading image:", error);
+            // Handle error as needed
+          }
+        }
+      };
+      const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImage(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    
+    const handleImageClick = () => {
+        document.getElementById("imageInput").click();
+    };
+     const sendMessage = (imageUrl = null) => {
+  if (type === '0') {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      const sendChatData = {
+        action: "onchat",
+        data: {
+          event: "SEND_CHAT",
+          data: {
+            type: "people",
+            to: person,
+            mes: msg,
+            image: imageUrl,
+          },
+        },
+      };
+      const JsonSendChat = JSON.stringify(sendChatData);
+      ws.send(JsonSendChat);
+
+      const newRow = document.createElement("tr");
+      const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
+      newRow.style.height = "50px";
+      newRow.innerHTML = `
+        <td class="tdMess">&nbsp;</td>
+        <td id="tdMess2" style="width: 200px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px inset; background-color: rgb(242, 242, 242); padding: 20px; text-align: right; color: red;">
+          ${msg}
+          ${imageUrl ? `<br/><img src="${imageUrl}" alt="Sent Image" style="max-width: 100px;" />` : ''}
+          <br/>
+          <p className="detailMes" style="font-size: 10px; color: black;">
+            ${currentTime}
+          </p>
+        </td>
+      `;
+
+      tbodyRef.current.append(newRow);
+      tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
+
+      setMsg("");
+      setImage(null);
+      setPreview(null);
+    } else {
+      console.error("WebSocket is not connected.");
+    }
+  } else if (type === '1') {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      const sendChatData = {
+        action: "onchat",
+        data: {
+          event: "SEND_CHAT",
+          data: {
+            type: "room",
+            to: person,
+            mes: msg,
+            image: imageUrl,
+          },
+        },
+      };
+      const JsonSendChat = JSON.stringify(sendChatData);
+      ws.send(JsonSendChat);
+
+      const newRow = document.createElement("tr");
+      const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
+      newRow.style.height = "50px";
+      newRow.innerHTML = `
+        <td class="tdMess" style="width: 200px";>&nbsp;</td>
+        <td id="tdMess2" style="width: 200px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px inset; background-color: rgb(242, 242, 242); padding: 20px; text-align: right; color: red;">
+          ${msg}
+          ${imageUrl ? `<br/><img src="${imageUrl}" alt="Sent Image" style="max-width: 100px;" />` : ''}
+          <br/>
+          <p className="detailMes" style="font-size: 10px; color: black;">
+            ${currentTime}
+          </p>
+        </td>
+      `;
+
+      tbodyRef.current.append(newRow);
+      tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
+
+      setMsg("");
+      setImage(null);
+      setPreview(null);
+    } else {
+      console.error("WebSocket is not connected.");
+    }
+  }
+};
+
+      
+
+      
     
     
     return (
@@ -468,11 +536,20 @@ const Chat = () => {
                 </table>
                 <form onSubmit={handleSubmit}>
                 <div className="footer-chat">
-                  <i
-                        className="icon fa fa-image clickable"
-                        style={{ fontSize: "20pt", cursor: "pointer" }}
-                        aria-hidden="true"
-                    ></i>
+                <i
+  className="icon fa fa-image clickable"
+  style={{ fontSize: "20pt", cursor: "pointer" }}
+  aria-hidden="true"
+  onClick={handleImageClick} // Đảm bảo đã thêm sự kiện onClick vào đây
+></i>
+<input
+  id="imageInput"
+  type="file"
+  style={{ display: 'none' }}
+  accept="image/*"
+  onChange={handleImageChange} // Đảm bảo đã thêm sự kiện onChange vào đây
+/>
+
                     {/* Nút emoji */}
                     <i
                         className="icon fa fa-smile-o clickable"
@@ -506,6 +583,12 @@ const Chat = () => {
                     {/* Nút gửi */}
                     <button type="submit">Send</button>
                 </div>
+                {preview && (
+  <div className="image-preview">
+    <img src={preview} alt="Image Preview" />
+    <button type="button" onClick={() => setPreview(null)}>Remove</button>
+  </div>
+)}
             </form>
 
             </section>

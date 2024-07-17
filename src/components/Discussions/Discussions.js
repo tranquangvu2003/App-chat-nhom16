@@ -16,12 +16,14 @@ const NewGroup = ({ style, submitNewGroup }) => {
   return (
     <form style={style} onSubmit={handleSubmit}>
       <div>Tạo group</div>
-      <input
-        placeholder="new Group"
+      <input style={{
+        border:"1px solid black"
+      }}
+        placeholder="Tên Group"
         value={newG}
         onChange={(e) => setNewG(e.target.value)}
       />
-      <button type="submit">Add</button>
+      <button type="submit">Tạo</button>
     </form>
   );
 };
@@ -37,13 +39,15 @@ const JoinGroup = ({ style, submitJoinGroup }) => {
 
   return (
     <form style={style} onSubmit={handleSubmit}>
-      <div>Join group</div>
-      <input
-        placeholder="join Group"
+      <div>Tham gia Group</div>
+      <input style={{
+        border:"1px solid black"
+      }}
+        placeholder="Tên Group"
         value={joinG}
         onChange={(e) => setJoinG(e.target.value)}
       />
-      <button type="submit">Join</button>
+      <button type="submit">Tham gia</button>
     </form>
   );
 };
@@ -62,17 +66,21 @@ const NewChat = ({ style, submitNewChat }) => {
   return (
       <form style={style} onSubmit={handleSubmit}>
         <div>New Chat</div>
-        <input
+        <input style={{
+        border:"1px solid black"
+      }}
             placeholder="Tên người mới"
             value={newC}
             onChange={(e) => setNewC(e.target.value)}
         />
-        <input
+        <input  style={{
+        border:"1px solid black"
+      }}
             placeholder="Nội dung"
             value={newContent}
             onChange={(e) => setNewContent(e.target.value)}
         />
-        <button type="submit">Join</button>
+        <button type="submit">Tạo</button>
       </form>
   );
 };
@@ -417,7 +425,7 @@ const handleSearchInputChange = (e) => {
               left: '29.5%',
               top: '12%',
               transform: 'translateX(-50%)',
-              backgroundColor: '#FF99CC', // Brighter white background
+              backgroundColor: '#fff', // Brighter white background
               padding: '30px', // Increased padding
               borderRadius: '12px', // More rounded corners
               boxShadow: '0 6px 12px rgba(0, 0, 0, 0.2)', // Increased shadow
@@ -440,7 +448,7 @@ const handleSearchInputChange = (e) => {
               left: '29.5%',
               top: '12%', // Adjusted position to ensure spacing
               transform: 'translateX(-50%)',
-              backgroundColor: '#FF99CC', // Brighter light gray background
+              backgroundColor: '#fff', // Brighter light gray background
               padding: '30px', // Increased padding
               borderRadius: '12px', // More rounded corners
               boxShadow: '0 6px 12px rgba(0, 0, 0, 0.2)', // Increased shadow
@@ -463,7 +471,7 @@ const handleSearchInputChange = (e) => {
                   left: '29.5%',
                   top: '12%', // Adjusted position to ensure spacing
                   transform: 'translateX(-50%)',
-                  backgroundColor: '#FF99CC', // Brighter light gray background
+                  backgroundColor: '#fff', // Brighter light gray background
                   padding: '30px', // Increased padding
                   borderRadius: '12px', // More rounded corners
                   boxShadow: '0 6px 12px rgba(0, 0, 0, 0.2)', // Increased shadow

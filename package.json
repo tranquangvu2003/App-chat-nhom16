@@ -9,6 +9,7 @@
     "axios": "^1.7.2",
     "emoji-mart": "^5.6.0",
     "emoji-picker-react": "^4.11.1",
+    "firebase": "^10.12.3",
     "font-awesome": "^4.7.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -17,6 +18,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
     "sass": "^1.77.2",
+    "uuid": "^10.0.0",
     "web-vitals": "^2.1.4",
     "ws": "^8.17.0"
   },
