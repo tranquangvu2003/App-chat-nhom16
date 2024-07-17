@@ -48,11 +48,11 @@ const Chat = () => {
 
         // Cập nhật lại tin nhắn khi person thay đổi
         if (ws && nameParam && ws.readyState === WebSocket.OPEN) {
-            console.log('skjfsdf',location.search)
-            console.log('namePra',nameParam)
-            console.log('TypePR',typeParam)
-            console.log('queryParams',queryParams)
-            console.log('setType',setType(typeParam));
+            // console.log('skjfsdf',location.search)
+            // console.log('namePra',nameParam)
+            // console.log('TypePR',typeParam)
+            // console.log('queryParams',queryParams)
+            // console.log('setType',setType(typeParam));
 
             if(typeParam === "0"){
                 setType(typeParam)
@@ -91,6 +91,7 @@ const Chat = () => {
     }, [location.search, ws]);
 
 
+    //khi vừa login
     useEffect(() => {
         const webSocket = new WebSocket("ws://140.238.54.136:8080/chat/chat");
         setWs(webSocket);
@@ -330,7 +331,7 @@ const Chat = () => {
                 newRow.style.height = "50px";
                 newRow.innerHTML = `
         <td class="tdMess">&nbsp;</td>
-        <td id="tdMess2" style="width: 200px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px inset; background-color: rgb(242, 242, 242); padding: 20px; text-align: right; color: red;">
+        <td id="tdMess2" style="width: 400px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px inset; background-color: rgb(242, 242, 242); padding: 20px; text-align: right; color: red;">
           ${msg}
           ${imageUrl ? `<br/><img src="${imageUrl}" alt="Sent Image" style="max-width: 100px;" />` : ''}
           <br/>
@@ -369,8 +370,8 @@ const Chat = () => {
                 const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
                 newRow.style.height = "50px";
                 newRow.innerHTML = `
-        <td class="tdMess" style="width: 200px";>&nbsp;</td>
-        <td id="tdMess2" style="width: 200px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px inset; background-color: rgb(242, 242, 242); padding: 20px; text-align: right; color: red;">
+        <td class="tdMess" style="width: 400px";>&nbsp;</td>
+        <td id="tdMess2" style="width: 400px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px inset; background-color: rgb(242, 242, 242); padding: 20px; text-align: right; color: red;">
           ${msg}
           ${imageUrl ? `<br/><img src="${imageUrl}" alt="Sent Image" style="max-width: 100px;" />` : ''}
           <br/>
