@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import './Discussions.scss';
 import UserDicusstion from "../UserDicusstion";
 import { Link } from "react-router-dom";
-
+import {toast} from "react-toastify";
 const NewGroup = ({ style, submitNewGroup }) => {
   const [newG, setNewG] = useState('');
 
@@ -218,6 +218,7 @@ const Discussions = () => {
       } else if (messagenewG.event === "CREATE_ROOM") {
         if (messagenewG.status === "success") {
           console.log('Phòng đã được tạo thành công:', messagenewG.data);
+          toast.success("Phòng đã được tạo thành công: "+messagenewG.data.name)
           const getUserList = {
             action: "onchat",
             data: {
@@ -229,6 +230,7 @@ const Discussions = () => {
           setShowTodoList(false)
         } else {
           console.error("Tạo phòng thất bại:", messagenewG.mes);
+          toast.error("Tạo phòng thất bại: "+ messagenewG.mes);
         }
       } else if (messagenewG.event === "GET_USER_LIST") {
         if (messagenewG.status === "success") {
@@ -284,6 +286,7 @@ const Discussions = () => {
         } else if (messagenewG.event === "JOIN_ROOM") {
           if (messagenewG.status === "success") {
             console.log('Tham gia phòng thành công:', messagenewG.data);
+            toast.success('Tham gia phòng thành công: '+messagenewG.data.name)
             const getUserList = {
               action: "onchat",
               data: {
@@ -295,6 +298,7 @@ const Discussions = () => {
             setShowJonGr(false)
           } else {
             console.error("Tham gia phòng thất bại:", messagenewG.mes);
+            toast.error("Tham gia phòng thất bại: "+ messagenewG.mes);
           }
         } else if (messagenewG.event === "GET_USER_LIST") {
           if (messagenewG.status === "success") {
@@ -345,6 +349,7 @@ const Discussions = () => {
           };
           const jsonG = JSON.stringify(sendJoinGroupData);
           wsk.send(jsonG);
+          toast.success("Gửi tin nhắn mới thành công!");
           const getUserList = {
             action: "onchat",
             data: {
