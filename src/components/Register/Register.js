@@ -62,15 +62,17 @@ const Register = ({ setWebSocket }) => {
   };
 
   return (
-      <div className="login-container">
-        <h2>Đăng kí tài khoản</h2>
+      <div className="register-container">
+        <h2 style={{textAlign: "center", fontFamily: "initial"}}>Đăng kí tài khoản</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor="username">Tài khoản:</label>
             <input
                 type="text"
                 id="username"
+                placeholder="Enter your username"
                 name="username"
+                style={{backgroundColor: "#f2f2f2"}}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -80,6 +82,8 @@ const Register = ({ setWebSocket }) => {
             <label htmlFor="password">Mật khẩu:</label>
             <input
                 type="password"
+                placeholder="Enter your password"
+                style={{backgroundColor: "#f2f2f2"}}
                 id="password"
                 name="password"
                 value={password}
@@ -91,6 +95,8 @@ const Register = ({ setWebSocket }) => {
             <label htmlFor="password">Nhập lại mật khẩu:</label>
             <input
                 type="password"
+                placeholder="Repeat your password"
+                style={{backgroundColor: "#f2f2f2"}}
                 id="password1"
                 name="password"
                 value={password1}
@@ -100,8 +106,8 @@ const Register = ({ setWebSocket }) => {
           </div>
           <button type="submit">Đăng Kí</button>
         </form>
-        <div className="btn-register">
-          <button><Link to="/">Quay lại đăng nhập</Link></button>
+        <div className="btnregister" style={{marginTop: "10px", textDecoration: "none", color: "fff"}}>
+          <button><Link style={{color : "white", textDecoration: "none"}} to="/">Quay Lại Đăng Nhập</Link></button>
         </div>
       </div>
   );

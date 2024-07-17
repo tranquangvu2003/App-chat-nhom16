@@ -32,8 +32,8 @@ const Chat = () => {
         }
         setShowPicker(false); // Ẩn picker emoji sau khi chọn
     };
-      
-      
+
+
     //update chat
     // console.log('type',type)
     useEffect(() => {
@@ -47,6 +47,12 @@ const Chat = () => {
 
         // Cập nhật lại tin nhắn khi person thay đổi
         if (ws && nameParam && ws.readyState === WebSocket.OPEN) {
+            console.log('skjfsdf',location.search)
+            console.log('namePra',nameParam)
+            console.log('TypePR',typeParam)
+            console.log('queryParams',queryParams)
+            console.log('setType',setType(typeParam));
+
             if(typeParam === "0"){
                 setType(typeParam)
                 const getPeopleChatMes = {
@@ -114,6 +120,7 @@ const Chat = () => {
             if (message.event === "LOGIN") {
                 if (message.status === "success") {
                     if(type === '0'){
+                        console.log("perrrsssonn",person)
                         // Sau khi đăng nhập thành công, gửi tin nhắn tới person hiện tại
                         const getPeopleChatMes = {
                             action: "onchat",
@@ -129,6 +136,7 @@ const Chat = () => {
                         console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
                         webSocket.send(JsonGetPeopleChatMes);
                     }else if(type === '1'){
+                        console.log("perrrsssonn",person)
                         // Sau khi đăng nhập thành công, gửi tin nhắn tới person hiện tại
                         const getPeopleChatMes = {
                             action: "onchat",
@@ -162,15 +170,15 @@ const Chat = () => {
                 newRow.style.height = "50px";
                 const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
                 newRow.innerHTML = `
-  <td id="tdMess1" style="color: blue; width: 200px; border-radius: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); background-color: #f2f2f2; padding: 20px;">
-    ${message.data.mes}
-    <br/>
-    <p className="detailMes" style="font-size: 10px; color: black;">
-      ${currentTime}
-    </p>
-  </td>
-  <td class="tdMess">&nbsp;</td>
-`;
+              <td id="tdMess1" style="color: blue; width: 200px; border-radius: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); background-color: #f2f2f2; padding: 20px;">
+                ${message.data.mes}
+                <br/>
+                <p className="detailMes" style="font-size: 10px; color: black;">
+                  ${currentTime}
+                </p>
+              </td>
+              <td class="tdMess">&nbsp;</td>
+            `;
 
                 // console.log(message.data.to);
                 // console.log();
@@ -178,7 +186,7 @@ const Chat = () => {
                     tbodyRef.current.append(newRow);
                     tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
                 }
-                
+
                 // Xử lý khi nhận được tin nhắn đã gửi thành công
                 // console.log("Tin nhắn đã gửi thành công:", message);
                 // Cập nhật danh sách tin nhắn nếu cần
@@ -406,14 +414,14 @@ const Chat = () => {
                     ></i>
                 </div>
                 <table
-                    style={{width: "100%",minWidth:"561px",maxWidth:"600px", borderCollapse: "collapse", marginBottom: 10}}
+                    style={{width: "100%",minWidth:"570px",maxWidth:"600px",minHeight:"533px"}}
                 >
                     <tbody
                         id="tbody"
                         ref={tbodyRef}
                         style={{
                             overflowY: "auto", // Hiển thị thanh cuộn dọc khi cần thiết
-                            maxHeight: "500px", // Chiều cao tối đa của phần tử
+                            maxHeight: "530px", // Chiều cao tối đa của phần tử
                             display: "block", // Thiết lập phần tử trở thành block để có thể sử dụng overflow-y
                         }}
                     >
@@ -430,8 +438,8 @@ const Chat = () => {
                                     <>
                                         <td style={{
                                             color: "blue",
-                                            width: "200px",
-                                            maxWidth:"200px",
+                                            width: "400px",
+                                            maxWidth:"400px",
                                             wordBreak:"break-all",
                                             borderRadius: "10px",
                                             boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
@@ -447,19 +455,19 @@ const Chat = () => {
                                                 </p>
                                             </>
                                         </td>
-                                        <td style={{width: "200px"}} className="me">
+                                        <td style={{width: "400px"}} className="me">
                                             &nbsp;
                                         </td>
                                     </>
                                 ) : (
                                     <>
-                                        <td style={{width: "200px"}} className="you">
+                                        <td style={{width: "400px"}} className="you">
                                             &nbsp;
                                         </td>
                                         <td style={{
                                             color: "red",
-                                            width: "200px",
-                                            maxWidth:"200px",
+                                            width: "400px",
+                                            maxWidth:"400px",
                                             wordBreak:"break-all",
                                             borderRadius: "10px",
                                             boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
@@ -485,8 +493,10 @@ const Chat = () => {
                                     <>
                                         <td style={{
                                             color: "blue",
-                                            width: "200px",
+                                            width: "400px",
                                             borderRadius: "10px",
+                                            maxWidth:"400px",
+                                            wordBreak:"break-all",
                                             boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
                                             backgroundColor: "#f2f2f2",
                                             padding: "20px", // Adjust margin as needed
@@ -503,18 +513,20 @@ const Chat = () => {
                                                     </span>
                                                 </>
                                         </td>
-                                        <td style={{width: "200px"}} className="me">
+                                        <td style={{width: "400px"}} className="me">
                                             &nbsp;
                                         </td>
                                     </>
                                 ) : (
                                     <>
-                                        <td style={{width: "200px"}} className="you">
+                                        <td style={{width: "400px"}} className="you">
                                             &nbsp;
                                         </td>
                                         <td style={{
                                             color: "red",
-                                            width: "200px",
+                                            width: "400px",
+                                            maxWidth:"400px",
+                                            wordBreak:"break-all",
                                             borderRadius: "10px",
                                             boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
                                             backgroundColor: "#f2f2f2",
@@ -592,28 +604,30 @@ const Chat = () => {
             </form>
 
             </section>
-            {type === "1" ? (<div className="table-container">
-                <table className="custom-table">
-                    <thead>
-                    <tr>
-                        <th>Chủ sở hữu <p style={{color: "red"}}>{own}</p></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td className="horizontal-line" colSpan="1"></td>
-                    </tr>
-                    <tr>
-                        <th>Thành viên</th>
-                    </tr>
-                    {listMember.map((item, index) => (
-                        <tr key={index}>
-                            <td>{index}:{item.name}</td>
+            {type === "1" ? (
+                <div className="table-container" style={{maxHeight: '100%', overflowY: 'auto'}}>
+                    <table className="custom-table" style={{width: '100%', borderCollapse: 'collapse'}}>
+                        <thead style={{position: 'sticky', top: -1, backgroundColor: '#fff', zIndex: 1}}>
+                        <tr>
+                            <th>Chủ sở hữu <p style={{color: 'red'}}>{own}</p></th>
                         </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </div>) : ""}
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td className="horizontal-line" colSpan="1"></td>
+                        </tr>
+                        <tr>
+                            <th>Thành viên</th>
+                        </tr>
+                        {listMember.map((item, index) => (
+                            <tr key={index}>
+                                <td>{index}{": "}{item.name}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+            ) : ""}
         </>
     );
 };

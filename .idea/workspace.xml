@@ -5,14 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="94668e6e-bde1-43aa-a1b7-7529c0df6003" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/LogIn/Login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/LogIn/Login.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Register/Register.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Register/Register.css.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Chat/Chat.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Chat/Chat.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Chat/Chat.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Chat/Chat.css.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Chat/Chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Chat/Chat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Chat/Chat.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Chat/Chat.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/LogIn/LogIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LogIn/LogIn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Menu/Menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Menu/Menu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/LogIn/Login.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LogIn/Login.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Register/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Register/Register.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Register/Register.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Register/Register.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,22 +47,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;tqvu&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/NLU/Nam3Ki2/LTFRONTEND/App-chat/App-chat-nhom16&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\WebStorm\\WebStorm 2023.3.5\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "tqvu",
+    "last_opened_file_path": "D:/NLU/Nam3Ki2/LTFRONTEND/App-chat/App-chat-nhom16",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "watcher.settings",
+    "ts.external.directory.path": "D:\\WebStorm\\WebStorm 2023.3.5\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\CloneWeb\App-chat-nhom16\src\components" />
