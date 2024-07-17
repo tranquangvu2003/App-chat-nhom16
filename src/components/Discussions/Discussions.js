@@ -128,7 +128,7 @@ const Discussions = () => {
           setUsers(message.data);
           setDefaultUsers(message.data); // Set default users list
         } else {
-          toast.error("Lấy danh sách người dùng thất bại:");
+          console.error("Lấy danh sách người dùng thất bại:", message.mes);
         }
       }
     };
@@ -152,9 +152,7 @@ const Discussions = () => {
 
   const submitNewGroup = (groupName) => {
     const wsk = new WebSocket("ws://140.238.54.136:8080/chat/chat");
-  
     wsk.onopen = () => {
-      console.log("WebSocket connection opened");
       const loginData = {
         action: "onchat",
         data: {
@@ -167,35 +165,32 @@ const Discussions = () => {
       };
       const JsonLogin = JSON.stringify(loginData);
       wsk.send(JsonLogin);
-    };
-  
+    }
     wsk.onmessage = (event) => {
       const messagenewG = JSON.parse(event.data);
       console.log("Received message:", messagenewG);
-  
+
       if (messagenewG.event === "LOGIN") {
         if (messagenewG.status === "success") {
-          console.log("Login successful");
+
           const sendGroupData = {
             action: "onchat",
             data: {
               event: "CREATE_ROOM",
               data: {
-                name: groupName,
-              },
-            },
+                name: groupName
+              }
+            }
           };
           const jsonNewG = JSON.stringify(sendGroupData);
           wsk.send(jsonNewG);
-          console.log("Gửi yêu cầu tạo nhóm:", jsonNewG);
+          console.log('Gửi yêu cầu tạo nhóm:', jsonNewG);
         } else {
-          toast.error("Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập.");
+          alert("Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập.");
         }
       } else if (messagenewG.event === "CREATE_ROOM") {
         if (messagenewG.status === "success") {
-          console.log("Phòng đã được tạo thành công:", messagenewG.data);
-          toast.success("Phòng đã được tạo thành công: " + messagenewG.data.name);
-  
+          console.log('Phòng đã được tạo thành công:', messagenewG.data);
           const getUserList = {
             action: "onchat",
             data: {
@@ -204,38 +199,23 @@ const Discussions = () => {
           };
           const JsonListUser = JSON.stringify(getUserList);
           wsk.send(JsonListUser);
-          setShowTodoList(false);
+          setShowTodoList(false)
         } else {
           console.error("Tạo phòng thất bại:", messagenewG.mes);
-          toast.error("Tạo phòng thất bại: " + messagenewG.mes);
         }
       } else if (messagenewG.event === "GET_USER_LIST") {
         if (messagenewG.status === "success") {
-          console.log("User list retrieved successfully");
           setUsers(messagenewG.data);
           setDefaultUsers(messagenewG.data); // Set default users list
-          wsk.close();
+          wsk.close()
         } else {
           console.error("Lấy danh sách người dùng thất bại:", messagenewG.mes);
         }
-      }
-    };
-  
-    wsk.onerror = (error) => {
-      console.error("WebSocket Error:", error);
-    };
-  
-    wsk.onclose = (event) => {
-      if (event.wasClean) {
-        console.log("WebSocket closed cleanly");
       } else {
-        console.error("WebSocket closed unexpectedly:", event);
-        toast.error("WebSocket closed unexpectedly, please try again.");
+        console.error('WebSocket không sẵn sàng hoặc đã đóng.');
       }
     };
-  };
-  
-  
+  }
   const submitJoinGroup = (groupName) => {
     const wsk = new WebSocket("ws://140.238.54.136:8080/chat/chat");
 
@@ -272,12 +252,11 @@ const Discussions = () => {
             wsk.send(jsonG);
             console.log('Gửi yêu cầu tham gia nhóm:', jsonG);
           } else {
-            toast.error("Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập.");
+            alert("Đăng nhập thất bại! Vui lòng kiểm tra lại thông tin đăng nhập.");
           }
         } else if (messagenewG.event === "JOIN_ROOM") {
           if (messagenewG.status === "success") {
             console.log('Tham gia phòng thành công:', messagenewG.data);
-            toast.success('Tham gia phòng thành công: '+messagenewG.data.name)
             const getUserList = {
               action: "onchat",
               data: {
@@ -289,7 +268,6 @@ const Discussions = () => {
             setShowJonGr(false)
           } else {
             console.error("Tham gia phòng thất bại:", messagenewG.mes);
-            toast.error("Tham gia phòng thất bại: "+ messagenewG.mes)
           }
         } else if (messagenewG.event === "GET_USER_LIST") {
           if (messagenewG.status === "success") {
@@ -340,7 +318,6 @@ const Discussions = () => {
           };
           const jsonG = JSON.stringify(sendJoinGroupData);
           wsk.send(jsonG);
-          toast.success("Gửi tin nhắn mới thành công!")
           const getUserList = {
             action: "onchat",
             data: {
@@ -405,7 +382,7 @@ const handleSearchInputChange = (e) => {
           </div>
           <div className="buttons">
             <button onClick={() => { setShowNewC(!showNewC); setShowTodoList(false);setShowJonGr(false) }} className="btn-add-member">
-              <i className="fa-solid fa-comment-medical" aria-hidden="true"></i>
+            <i className="fa fa-user" aria-hidden="true"></i>
             </button>
             <button onClick={() => { setShowJonGr(!showJonGr); setShowTodoList(false);setShowNewC(false) }} className="btn-add-member">
               <i className="fa fa-user-plus" aria-hidden="true"></i>

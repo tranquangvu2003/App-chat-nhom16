@@ -363,6 +363,8 @@ const Chat = () => {
                                         <td style={{
                                             color: "blue",
                                             width: "200px",
+                                            maxWidth:"200px",
+                                            wordBreak:"break-all",
                                             borderRadius: "10px",
                                             boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
                                             backgroundColor: "#f2f2f2",
@@ -389,6 +391,8 @@ const Chat = () => {
                                         <td style={{
                                             color: "red",
                                             width: "200px",
+                                            maxWidth:"200px",
+                                            wordBreak:"break-all",
                                             borderRadius: "10px",
                                             boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
                                             backgroundColor: "#f2f2f2",
@@ -479,6 +483,15 @@ const Chat = () => {
                     {/* Hiển thị picker emoji nếu showPicker là true */}
                     {showPicker && (
                         <Picker className="emoji-picker-container"
+                         style={{
+                        position: 'absolute',
+                        width: '600px',  // Adjust this value to make it wider
+                        height: '400px', // Adjust this value to make it shorter
+                        bottom: '10px',  // Adjust this value as needed
+                        right: '600px',   // Adjust this value as needed
+                        zIndex: 1000,    // Ensure it is above other elements
+                        overflowY: 'scroll'
+                     }}
                             onEmojiClick={onEmojiClick}
                         />
                     )}
