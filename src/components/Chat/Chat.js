@@ -3,6 +3,7 @@ import "./Chat.scss";
 import { useLocation } from "react-router-dom";
 import Picker, {SkinTones} from 'emoji-picker-react';
 import { storage } from "../../firebase/firebase";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
 
 
 const Chat = () => {
@@ -250,19 +251,19 @@ const Chat = () => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-          setImage(file);
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            setPreview(reader.result);
-          };
-          reader.readAsDataURL(file);
+            setImage(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview(reader.result);
+            };
+            reader.readAsDataURL(file);
         }
-      };
-    
-      
-      
-      
-    
+    };
+
+
+
+
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -274,29 +275,25 @@ const Chat = () => {
     };
     const handleUpload = async () => {
         if (image) {
-          const storageRef = storage.ref(); // Ensure storage is properly initialized
-          const fileRef = storageRef.child(image.name); // Create a reference to the image file
-      
-          try {
-            // Upload the image file to Firebase Storage
-            const snapshot = await fileRef.put(image);
-      
-            // Get the download URL for the image
-            const imageUrl = await snapshot.ref.getDownloadURL();
-      
-            // Call sendMessage with imageUrl after successful upload
-            sendMessage(imageUrl);
-      
-            // Clear image and preview states after upload
-            setImage(null);
-            setPreview(null);
-          } catch (error) {
-            console.error("Error uploading image:", error);
-            // Handle error as needed
-          }
+            const storageRef = ref(storage, image.name); // Tạo tham chiếu đến tệp ảnh trong Firebase Storage
+            try {
+                // Upload ảnh lên Firebase Storage
+                const snapshot = await uploadBytes(storageRef, image);
+                // Lấy URL tải xuống của ảnh
+                const imageUrl = await getDownloadURL(snapshot.ref);
+                // Gọi sendMessage với imageUrl sau khi upload thành công
+                sendMessage(imageUrl);
+                // Xóa trạng thái ảnh và preview sau khi upload
+                setImage(null);
+                setPreview(null);
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                // Xử lý lỗi nếu cần
+            }
         }
-      };
-      const handleImageChange = (e) => {
+    };
+
+    const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             setImage(file);
@@ -307,32 +304,31 @@ const Chat = () => {
             reader.readAsDataURL(file);
         }
     };
-    
+
     const handleImageClick = () => {
         document.getElementById("imageInput").click();
     };
-     const sendMessage = (imageUrl = null) => {
-  if (type === '0') {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      const sendChatData = {
-        action: "onchat",
-        data: {
-          event: "SEND_CHAT",
-          data: {
-            type: "people",
-            to: person,
-            mes: msg,
-            image: imageUrl,
-          },
-        },
-      };
-      const JsonSendChat = JSON.stringify(sendChatData);
-      ws.send(JsonSendChat);
+    const sendMessage = (imageUrl = null) => {
+        if (type === '0') {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const sendChatData = {
+                    action: "onchat",
+                    data: {
+                        event: "SEND_CHAT",
+                        data: {
+                            type: "people",
+                            to: person,
+                            mes: imageUrl == null ? msg : imageUrl,
+                        },
+                    },
+                };
+                const JsonSendChat = JSON.stringify(sendChatData);
+                ws.send(JsonSendChat);
 
-      const newRow = document.createElement("tr");
-      const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
-      newRow.style.height = "50px";
-      newRow.innerHTML = `
+                const newRow = document.createElement("tr");
+                const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
+                newRow.style.height = "50px";
+                newRow.innerHTML = `
         <td class="tdMess">&nbsp;</td>
         <td id="tdMess2" style="width: 200px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px inset; background-color: rgb(242, 242, 242); padding: 20px; text-align: right; color: red;">
           ${msg}
@@ -344,36 +340,35 @@ const Chat = () => {
         </td>
       `;
 
-      tbodyRef.current.append(newRow);
-      tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
+                tbodyRef.current.append(newRow);
+                tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
 
-      setMsg("");
-      setImage(null);
-      setPreview(null);
-    } else {
-      console.error("WebSocket is not connected.");
-    }
-  } else if (type === '1') {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      const sendChatData = {
-        action: "onchat",
-        data: {
-          event: "SEND_CHAT",
-          data: {
-            type: "room",
-            to: person,
-            mes: msg,
-            image: imageUrl,
-          },
-        },
-      };
-      const JsonSendChat = JSON.stringify(sendChatData);
-      ws.send(JsonSendChat);
+                setMsg("");
+                setImage(null);
+                setPreview(null);
+            } else {
+                console.error("WebSocket is not connected.");
+            }
+        } else if (type === '1') {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const sendChatData = {
+                    action: "onchat",
+                    data: {
+                        event: "SEND_CHAT",
+                        data: {
+                            type: "room",
+                            to: person,
+                            mes: imageUrl == null ? msg : imageUrl,
+                        },
+                    },
+                };
+                const JsonSendChat = JSON.stringify(sendChatData);
+                ws.send(JsonSendChat);
 
-      const newRow = document.createElement("tr");
-      const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
-      newRow.style.height = "50px";
-      newRow.innerHTML = `
+                const newRow = document.createElement("tr");
+                const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
+                newRow.style.height = "50px";
+                newRow.innerHTML = `
         <td class="tdMess" style="width: 200px";>&nbsp;</td>
         <td id="tdMess2" style="width: 200px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px inset; background-color: rgb(242, 242, 242); padding: 20px; text-align: right; color: red;">
           ${msg}
@@ -385,23 +380,23 @@ const Chat = () => {
         </td>
       `;
 
-      tbodyRef.current.append(newRow);
-      tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
+                tbodyRef.current.append(newRow);
+                tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
 
-      setMsg("");
-      setImage(null);
-      setPreview(null);
-    } else {
-      console.error("WebSocket is not connected.");
-    }
-  }
-};
+                setMsg("");
+                setImage(null);
+                setPreview(null);
+            } else {
+                console.error("WebSocket is not connected.");
+            }
+        }
+    };
 
-      
 
-      
-    
-    
+
+
+
+
     return (
         <>
             <section className="chat">
@@ -502,16 +497,16 @@ const Chat = () => {
                                             padding: "20px", // Adjust margin as needed
                                         }} className="you">
                                             {message.mes}
-                                                <>
-                                                    <br />
-                                                    <span className="detailMes" style={{fontSize: "10px", color: "black" , whiteSpace: "nowrap"}}>
+                                            <>
+                                                <br />
+                                                <span className="detailMes" style={{fontSize: "10px", color: "black" , whiteSpace: "nowrap"}}>
                                                         <span className="detailMes"
-                                                           style={{fontSize: "10px", color: "black"}}>
+                                                              style={{fontSize: "10px", color: "black"}}>
                                                             {message.name} {"  / "}
                                                         </span>
-                                                        {message.createAt}
+                                                    {message.createAt}
                                                     </span>
-                                                </>
+                                            </>
                                         </td>
                                         <td style={{width: "400px"}} className="me">
                                             &nbsp;
@@ -547,61 +542,61 @@ const Chat = () => {
                     </tbody>
                 </table>
                 <form onSubmit={handleSubmit}>
-                <div className="footer-chat">
-                <i
-  className="icon fa fa-image clickable"
-  style={{ fontSize: "20pt", cursor: "pointer" }}
-  aria-hidden="true"
-  onClick={handleImageClick} // Đảm bảo đã thêm sự kiện onClick vào đây
-></i>
-<input
-  id="imageInput"
-  type="file"
-  style={{ display: 'none' }}
-  accept="image/*"
-  onChange={handleImageChange} // Đảm bảo đã thêm sự kiện onChange vào đây
-/>
-
-                    {/* Nút emoji */}
-                    <i
-                        className="icon fa fa-smile-o clickable"
-                        style={{ fontSize: "20pt", cursor: "pointer" }}
-                        aria-hidden="true"
-                        onClick={() => setShowPicker(prev => !prev)}
-                    ></i>
-                    {/* Hiển thị picker emoji nếu showPicker là true */}
-                    {showPicker && (
-                        <Picker className="emoji-picker-container"
-                         style={{
-                        position: 'absolute',
-                        width: '600px',  // Adjust this value to make it wider
-                        height: '400px', // Adjust this value to make it shorter
-                        bottom: '10px',  // Adjust this value as needed
-                        right: '600px',   // Adjust this value as needed
-                        zIndex: 1000,    // Ensure it is above other elements
-                        overflowY: 'scroll'
-                     }}
-                            onEmojiClick={onEmojiClick}
+                    <div className="footer-chat">
+                        <i
+                            className="icon fa fa-image clickable"
+                            style={{ fontSize: "20pt", cursor: "pointer" }}
+                            aria-hidden="true"
+                            onClick={handleImageClick} // Đảm bảo đã thêm sự kiện onClick vào đây
+                        ></i>
+                        <input
+                            id="imageInput"
+                            type="file"
+                            style={{ display: 'none' }}
+                            accept="image/*"
+                            onChange={handleImageChange} // Đảm bảo đã thêm sự kiện onChange vào đây
                         />
+
+                        {/* Nút emoji */}
+                        <i
+                            className="icon fa fa-smile-o clickable"
+                            style={{ fontSize: "20pt", cursor: "pointer" }}
+                            aria-hidden="true"
+                            onClick={() => setShowPicker(prev => !prev)}
+                        ></i>
+                        {/* Hiển thị picker emoji nếu showPicker là true */}
+                        {showPicker && (
+                            <Picker className="emoji-picker-container"
+                                    style={{
+                                        position: 'absolute',
+                                        width: '600px',  // Adjust this value to make it wider
+                                        height: '400px', // Adjust this value to make it shorter
+                                        bottom: '10px',  // Adjust this value as needed
+                                        right: '600px',   // Adjust this value as needed
+                                        zIndex: 1000,    // Ensure it is above other elements
+                                        overflowY: 'scroll'
+                                    }}
+                                    onEmojiClick={onEmojiClick}
+                            />
+                        )}
+                        {/* Input tin nhắn */}
+                        <input
+                            type="text"
+                            className="write-message"
+                            placeholder="Type your message here"
+                            value={msg}
+                            onChange={(e) => setMsg(e.target.value)}
+                        />
+                        {/* Nút gửi */}
+                        <button type="submit">Send</button>
+                    </div>
+                    {preview && (
+                        <div className="image-preview">
+                            <img src={preview} alt="Image Preview" />
+                            <button type="button" onClick={() => setPreview(null)}>Remove</button>
+                        </div>
                     )}
-                    {/* Input tin nhắn */}
-                    <input
-                        type="text"
-                        className="write-message"
-                        placeholder="Type your message here"
-                        value={msg}
-                        onChange={(e) => setMsg(e.target.value)}
-                    />
-                    {/* Nút gửi */}
-                    <button type="submit">Send</button>
-                </div>
-                {preview && (
-  <div className="image-preview">
-    <img src={preview} alt="Image Preview" />
-    <button type="button" onClick={() => setPreview(null)}>Remove</button>
-  </div>
-)}
-            </form>
+                </form>
 
             </section>
             {type === "1" ? (
