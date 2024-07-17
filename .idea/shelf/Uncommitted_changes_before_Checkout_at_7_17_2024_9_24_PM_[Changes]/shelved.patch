@@ -1,0 +1,66 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"94668e6e-bde1-43aa-a1b7-7529c0df6003\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/watcherTasks.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/components/LogIn/Login.css\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/components/LogIn/Login.css.map\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/components/Register/Register.css\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/components/Register/Register.css.map\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/package-lock.json\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/package-lock.json\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/Chat/Chat.css\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/components/Chat/Chat.css\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/Chat/Chat.css.map\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/components/Chat/Chat.css.map\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/Chat/Chat.js\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/components/Chat/Chat.js\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/Chat/Chat.scss\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/components/Chat/Chat.scss\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/Discussions/Discussions.js\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/components/Discussions/Discussions.js\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/LogIn/LogIn.js\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/components/LogIn/LogIn.js\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/LogIn/Login.scss\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/components/LogIn/Login.scss\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/Register/Register.js\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/components/Register/Register.js\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components/Register/Register.scss\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/components/Register/Register.scss\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"main\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;customColor&quot;: &quot;&quot;,\r\n  &quot;associatedIndex&quot;: 0\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2hS4NSveS6ksdSv5gKN0OzLKB5D\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"git-widget-placeholder\": \"tqvu\",\r\n    \"last_opened_file_path\": \"D:/NLU/Nam3Ki2/LTFRONTEND/App-chat/App-chat-nhom16\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"settings.editor.selected.configurable\": \"watcher.settings\",\r\n    \"ts.external.directory.path\": \"D:\\\\WebStorm\\\\WebStorm 2023.3.5\\\\plugins\\\\javascript-impl\\\\jsLanguageServicesImpl\\\\external\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\CloneWeb\\App-chat-nhom16\\src\\components\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\CloneWeb\\App-chat-nhom16\\src\\components\\Menu\" />\r\n      <recent name=\"D:\\CloneWeb\\App-chat-nhom16\\src\\components\\LogIn\" />\r\n      <recent name=\"D:\\CloneWeb\\App-chat-nhom16\\src\\components\\HomePage\" />\r\n      <recent name=\"D:\\CloneWeb\\App-chat-nhom16\\src\\components\\Discussions\" />\r\n      <recent name=\"D:\\CloneWeb\\App-chat-nhom16\\src\\components\\Chat\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"94668e6e-bde1-43aa-a1b7-7529c0df6003\" name=\"Changes\" comment=\"\" />\r\n      <created>1717574108252</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1717574108252</updated>\r\n      <workItem from=\"1717574110710\" duration=\"4496000\" />\r\n      <workItem from=\"1717579690874\" duration=\"297000\" />\r\n      <workItem from=\"1717944450912\" duration=\"345000\" />\r\n      <workItem from=\"1718369919168\" duration=\"1860000\" />\r\n      <workItem from=\"1719296722863\" duration=\"2095000\" />\r\n      <workItem from=\"1720279742362\" duration=\"8986000\" />\r\n      <workItem from=\"1720309806066\" duration=\"20531000\" />\r\n      <workItem from=\"1720364977308\" duration=\"7884000\" />\r\n      <workItem from=\"1720496166448\" duration=\"27249000\" />\r\n      <workItem from=\"1720831200257\" duration=\"13457000\" />\r\n      <workItem from=\"1721028466084\" duration=\"20464000\" />\r\n      <workItem from=\"1721127952303\" duration=\"4553000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -5,22 +5,9 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="94668e6e-bde1-43aa-a1b7-7529c0df6003" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/components/LogIn/Login.css" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/components/LogIn/Login.css.map" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/components/Register/Register.css" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/components/Register/Register.css.map" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/Chat/Chat.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Chat/Chat.css" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/Chat/Chat.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Chat/Chat.css.map" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/components/Chat/Chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Chat/Chat.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/Chat/Chat.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Chat/Chat.scss" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Discussions/Discussions.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/LogIn/LogIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LogIn/LogIn.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/LogIn/Login.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LogIn/Login.scss" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/Register/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Register/Register.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/components/Register/Register.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Register/Register.scss" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/firebase/firebase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/firebase/firebase.js" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -30,7 +17,7 @@
+   <component name="Git.Settings">
+     <option name="RECENT_BRANCH_BY_REPOSITORY">
+       <map>
+-        <entry key="$PROJECT_DIR$" value="main" />
++        <entry key="$PROJECT_DIR$" value="lechitruong" />
+       </map>
+     </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+@@ -51,7 +38,7 @@
+   "keyToString": {
+     "RunOnceActivity.OpenProjectViewOnStart": "true",
+     "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "git-widget-placeholder": "tqvu",
++    "git-widget-placeholder": "main",
+     "last_opened_file_path": "D:/NLU/Nam3Ki2/LTFRONTEND/App-chat/App-chat-nhom16",
+     "node.js.detected.package.eslint": "true",
+     "node.js.detected.package.tslint": "true",
+@@ -74,6 +61,13 @@
+       <recent name="D:\CloneWeb\App-chat-nhom16\src\components\Discussions" />
+       <recent name="D:\CloneWeb\App-chat-nhom16\src\components\Chat" />
+     </key>
++  </component>
++  <component name="SharedIndexes">
++    <attachedChunks>
++      <set>
++        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.18034.50" />
++      </set>
++    </attachedChunks>
+   </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">

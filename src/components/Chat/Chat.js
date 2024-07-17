@@ -3,6 +3,7 @@ import "./Chat.scss";
 import { useLocation } from "react-router-dom";
 import Picker, {SkinTones} from 'emoji-picker-react';
 import { storage } from "../../firebase/firebase";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
 
 
 const Chat = () => {
@@ -32,8 +33,8 @@ const Chat = () => {
         }
         setShowPicker(false); // Ẩn picker emoji sau khi chọn
     };
-      
-      
+
+
     //update chat
     // console.log('type',type)
     useEffect(() => {
@@ -47,6 +48,12 @@ const Chat = () => {
 
         // Cập nhật lại tin nhắn khi person thay đổi
         if (ws && nameParam && ws.readyState === WebSocket.OPEN) {
+            console.log('skjfsdf',location.search)
+            console.log('namePra',nameParam)
+            console.log('TypePR',typeParam)
+            console.log('queryParams',queryParams)
+            console.log('setType',setType(typeParam));
+
             if(typeParam === "0"){
                 setType(typeParam)
                 const getPeopleChatMes = {
@@ -114,6 +121,7 @@ const Chat = () => {
             if (message.event === "LOGIN") {
                 if (message.status === "success") {
                     if(type === '0'){
+                        console.log("perrrsssonn",person)
                         // Sau khi đăng nhập thành công, gửi tin nhắn tới person hiện tại
                         const getPeopleChatMes = {
                             action: "onchat",
@@ -129,6 +137,7 @@ const Chat = () => {
                         console.log("Chuỗi JSON getPeopleChatMes:", JsonGetPeopleChatMes);
                         webSocket.send(JsonGetPeopleChatMes);
                     }else if(type === '1'){
+                        console.log("perrrsssonn",person)
                         // Sau khi đăng nhập thành công, gửi tin nhắn tới person hiện tại
                         const getPeopleChatMes = {
                             action: "onchat",
@@ -162,15 +171,15 @@ const Chat = () => {
                 newRow.style.height = "50px";
                 const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
                 newRow.innerHTML = `
-  <td id="tdMess1" style="color: blue; width: 200px; border-radius: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); background-color: #f2f2f2; padding: 20px;">
-    ${message.data.mes}
-    <br/>
-    <p className="detailMes" style="font-size: 10px; color: black;">
-      ${currentTime}
-    </p>
-  </td>
-  <td class="tdMess">&nbsp;</td>
-`;
+              <td id="tdMess1" style="color: blue; width: 200px; border-radius: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); background-color: #f2f2f2; padding: 20px;">
+                ${message.data.mes}
+                <br/>
+                <p className="detailMes" style="font-size: 10px; color: black;">
+                  ${currentTime}
+                </p>
+              </td>
+              <td class="tdMess">&nbsp;</td>
+            `;
 
                 // console.log(message.data.to);
                 // console.log();
@@ -178,7 +187,7 @@ const Chat = () => {
                     tbodyRef.current.append(newRow);
                     tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
                 }
-                
+
                 // Xử lý khi nhận được tin nhắn đã gửi thành công
                 // console.log("Tin nhắn đã gửi thành công:", message);
                 // Cập nhật danh sách tin nhắn nếu cần
@@ -242,19 +251,19 @@ const Chat = () => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-          setImage(file);
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            setPreview(reader.result);
-          };
-          reader.readAsDataURL(file);
+            setImage(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview(reader.result);
+            };
+            reader.readAsDataURL(file);
         }
-      };
-    
-      
-      
-      
-    
+    };
+
+
+
+
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -266,29 +275,25 @@ const Chat = () => {
     };
     const handleUpload = async () => {
         if (image) {
-          const storageRef = storage.ref(); // Ensure storage is properly initialized
-          const fileRef = storageRef.child(image.name); // Create a reference to the image file
-      
-          try {
-            // Upload the image file to Firebase Storage
-            const snapshot = await fileRef.put(image);
-      
-            // Get the download URL for the image
-            const imageUrl = await snapshot.ref.getDownloadURL();
-      
-            // Call sendMessage with imageUrl after successful upload
-            sendMessage(imageUrl);
-      
-            // Clear image and preview states after upload
-            setImage(null);
-            setPreview(null);
-          } catch (error) {
-            console.error("Error uploading image:", error);
-            // Handle error as needed
-          }
+            const storageRef = ref(storage, image.name); // Tạo tham chiếu đến tệp ảnh trong Firebase Storage
+            try {
+                // Upload ảnh lên Firebase Storage
+                const snapshot = await uploadBytes(storageRef, image);
+                // Lấy URL tải xuống của ảnh
+                const imageUrl = await getDownloadURL(snapshot.ref);
+                // Gọi sendMessage với imageUrl sau khi upload thành công
+                sendMessage(imageUrl);
+                // Xóa trạng thái ảnh và preview sau khi upload
+                setImage(null);
+                setPreview(null);
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                // Xử lý lỗi nếu cần
+            }
         }
-      };
-      const handleImageChange = (e) => {
+    };
+
+    const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             setImage(file);
@@ -299,32 +304,31 @@ const Chat = () => {
             reader.readAsDataURL(file);
         }
     };
-    
+
     const handleImageClick = () => {
         document.getElementById("imageInput").click();
     };
-     const sendMessage = (imageUrl = null) => {
-  if (type === '0') {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      const sendChatData = {
-        action: "onchat",
-        data: {
-          event: "SEND_CHAT",
-          data: {
-            type: "people",
-            to: person,
-            mes: msg,
-            image: imageUrl,
-          },
-        },
-      };
-      const JsonSendChat = JSON.stringify(sendChatData);
-      ws.send(JsonSendChat);
+    const sendMessage = (imageUrl = null) => {
+        if (type === '0') {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const sendChatData = {
+                    action: "onchat",
+                    data: {
+                        event: "SEND_CHAT",
+                        data: {
+                            type: "people",
+                            to: person,
+                            mes: imageUrl == null ? msg : imageUrl,
+                        },
+                    },
+                };
+                const JsonSendChat = JSON.stringify(sendChatData);
+                ws.send(JsonSendChat);
 
-      const newRow = document.createElement("tr");
-      const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
-      newRow.style.height = "50px";
-      newRow.innerHTML = `
+                const newRow = document.createElement("tr");
+                const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
+                newRow.style.height = "50px";
+                newRow.innerHTML = `
         <td class="tdMess">&nbsp;</td>
         <td id="tdMess2" style="width: 200px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px inset; background-color: rgb(242, 242, 242); padding: 20px; text-align: right; color: red;">
           ${msg}
@@ -336,36 +340,35 @@ const Chat = () => {
         </td>
       `;
 
-      tbodyRef.current.append(newRow);
-      tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
+                tbodyRef.current.append(newRow);
+                tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
 
-      setMsg("");
-      setImage(null);
-      setPreview(null);
-    } else {
-      console.error("WebSocket is not connected.");
-    }
-  } else if (type === '1') {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      const sendChatData = {
-        action: "onchat",
-        data: {
-          event: "SEND_CHAT",
-          data: {
-            type: "room",
-            to: person,
-            mes: msg,
-            image: imageUrl,
-          },
-        },
-      };
-      const JsonSendChat = JSON.stringify(sendChatData);
-      ws.send(JsonSendChat);
+                setMsg("");
+                setImage(null);
+                setPreview(null);
+            } else {
+                console.error("WebSocket is not connected.");
+            }
+        } else if (type === '1') {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const sendChatData = {
+                    action: "onchat",
+                    data: {
+                        event: "SEND_CHAT",
+                        data: {
+                            type: "room",
+                            to: person,
+                            mes: imageUrl == null ? msg : imageUrl,
+                        },
+                    },
+                };
+                const JsonSendChat = JSON.stringify(sendChatData);
+                ws.send(JsonSendChat);
 
-      const newRow = document.createElement("tr");
-      const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
-      newRow.style.height = "50px";
-      newRow.innerHTML = `
+                const newRow = document.createElement("tr");
+                const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
+                newRow.style.height = "50px";
+                newRow.innerHTML = `
         <td class="tdMess" style="width: 200px";>&nbsp;</td>
         <td id="tdMess2" style="width: 200px; border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px inset; background-color: rgb(242, 242, 242); padding: 20px; text-align: right; color: red;">
           ${msg}
@@ -377,23 +380,23 @@ const Chat = () => {
         </td>
       `;
 
-      tbodyRef.current.append(newRow);
-      tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
+                tbodyRef.current.append(newRow);
+                tbodyRef.current.scrollTop = tbodyRef.current.scrollHeight;
 
-      setMsg("");
-      setImage(null);
-      setPreview(null);
-    } else {
-      console.error("WebSocket is not connected.");
-    }
-  }
-};
+                setMsg("");
+                setImage(null);
+                setPreview(null);
+            } else {
+                console.error("WebSocket is not connected.");
+            }
+        }
+    };
 
-      
 
-      
-    
-    
+
+
+
+
     return (
         <>
             <section className="chat">
@@ -406,14 +409,14 @@ const Chat = () => {
                     ></i>
                 </div>
                 <table
-                    style={{width: "100%",minWidth:"561px",maxWidth:"600px", borderCollapse: "collapse", marginBottom: 10}}
+                    style={{width: "100%",minWidth:"570px",maxWidth:"600px",minHeight:"533px"}}
                 >
                     <tbody
                         id="tbody"
                         ref={tbodyRef}
                         style={{
                             overflowY: "auto", // Hiển thị thanh cuộn dọc khi cần thiết
-                            maxHeight: "500px", // Chiều cao tối đa của phần tử
+                            maxHeight: "530px", // Chiều cao tối đa của phần tử
                             display: "block", // Thiết lập phần tử trở thành block để có thể sử dụng overflow-y
                         }}
                     >
@@ -430,8 +433,8 @@ const Chat = () => {
                                     <>
                                         <td style={{
                                             color: "blue",
-                                            width: "200px",
-                                            maxWidth:"200px",
+                                            width: "400px",
+                                            maxWidth:"400px",
                                             wordBreak:"break-all",
                                             borderRadius: "10px",
                                             boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
@@ -447,19 +450,19 @@ const Chat = () => {
                                                 </p>
                                             </>
                                         </td>
-                                        <td style={{width: "200px"}} className="me">
+                                        <td style={{width: "400px"}} className="me">
                                             &nbsp;
                                         </td>
                                     </>
                                 ) : (
                                     <>
-                                        <td style={{width: "200px"}} className="you">
+                                        <td style={{width: "400px"}} className="you">
                                             &nbsp;
                                         </td>
                                         <td style={{
                                             color: "red",
-                                            width: "200px",
-                                            maxWidth:"200px",
+                                            width: "400px",
+                                            maxWidth:"400px",
                                             wordBreak:"break-all",
                                             borderRadius: "10px",
                                             boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
@@ -485,36 +488,40 @@ const Chat = () => {
                                     <>
                                         <td style={{
                                             color: "blue",
-                                            width: "200px",
+                                            width: "400px",
                                             borderRadius: "10px",
+                                            maxWidth:"400px",
+                                            wordBreak:"break-all",
                                             boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
                                             backgroundColor: "#f2f2f2",
                                             padding: "20px", // Adjust margin as needed
                                         }} className="you">
                                             {message.mes}
-                                                <>
-                                                    <br />
-                                                    <span className="detailMes" style={{fontSize: "10px", color: "black" , whiteSpace: "nowrap"}}>
+                                            <>
+                                                <br />
+                                                <span className="detailMes" style={{fontSize: "10px", color: "black" , whiteSpace: "nowrap"}}>
                                                         <span className="detailMes"
-                                                           style={{fontSize: "10px", color: "black"}}>
+                                                              style={{fontSize: "10px", color: "black"}}>
                                                             {message.name} {"  / "}
                                                         </span>
-                                                        {message.createAt}
+                                                    {message.createAt}
                                                     </span>
-                                                </>
+                                            </>
                                         </td>
-                                        <td style={{width: "200px"}} className="me">
+                                        <td style={{width: "400px"}} className="me">
                                             &nbsp;
                                         </td>
                                     </>
                                 ) : (
                                     <>
-                                        <td style={{width: "200px"}} className="you">
+                                        <td style={{width: "400px"}} className="you">
                                             &nbsp;
                                         </td>
                                         <td style={{
                                             color: "red",
-                                            width: "200px",
+                                            width: "400px",
+                                            maxWidth:"400px",
+                                            wordBreak:"break-all",
                                             borderRadius: "10px",
                                             boxShadow: "inset 0 0 10px rgba(0,0,0,0.5)",
                                             backgroundColor: "#f2f2f2",
@@ -535,85 +542,87 @@ const Chat = () => {
                     </tbody>
                 </table>
                 <form onSubmit={handleSubmit}>
-                <div className="footer-chat">
-                <i
-  className="icon fa fa-image clickable"
-  style={{ fontSize: "20pt", cursor: "pointer" }}
-  aria-hidden="true"
-  onClick={handleImageClick} // Đảm bảo đã thêm sự kiện onClick vào đây
-></i>
-<input
-  id="imageInput"
-  type="file"
-  style={{ display: 'none' }}
-  accept="image/*"
-  onChange={handleImageChange} // Đảm bảo đã thêm sự kiện onChange vào đây
-/>
-
-                    {/* Nút emoji */}
-                    <i
-                        className="icon fa fa-smile-o clickable"
-                        style={{ fontSize: "20pt", cursor: "pointer" }}
-                        aria-hidden="true"
-                        onClick={() => setShowPicker(prev => !prev)}
-                    ></i>
-                    {/* Hiển thị picker emoji nếu showPicker là true */}
-                    {showPicker && (
-                        <Picker className="emoji-picker-container"
-                         style={{
-                        position: 'absolute',
-                        width: '600px',  // Adjust this value to make it wider
-                        height: '400px', // Adjust this value to make it shorter
-                        bottom: '10px',  // Adjust this value as needed
-                        right: '600px',   // Adjust this value as needed
-                        zIndex: 1000,    // Ensure it is above other elements
-                        overflowY: 'scroll'
-                     }}
-                            onEmojiClick={onEmojiClick}
+                    <div className="footer-chat">
+                        <i
+                            className="icon fa fa-image clickable"
+                            style={{ fontSize: "20pt", cursor: "pointer" }}
+                            aria-hidden="true"
+                            onClick={handleImageClick} // Đảm bảo đã thêm sự kiện onClick vào đây
+                        ></i>
+                        <input
+                            id="imageInput"
+                            type="file"
+                            style={{ display: 'none' }}
+                            accept="image/*"
+                            onChange={handleImageChange} // Đảm bảo đã thêm sự kiện onChange vào đây
                         />
+
+                        {/* Nút emoji */}
+                        <i
+                            className="icon fa fa-smile-o clickable"
+                            style={{ fontSize: "20pt", cursor: "pointer" }}
+                            aria-hidden="true"
+                            onClick={() => setShowPicker(prev => !prev)}
+                        ></i>
+                        {/* Hiển thị picker emoji nếu showPicker là true */}
+                        {showPicker && (
+                            <Picker className="emoji-picker-container"
+                                    style={{
+                                        position: 'absolute',
+                                        width: '600px',  // Adjust this value to make it wider
+                                        height: '400px', // Adjust this value to make it shorter
+                                        bottom: '10px',  // Adjust this value as needed
+                                        right: '600px',   // Adjust this value as needed
+                                        zIndex: 1000,    // Ensure it is above other elements
+                                        overflowY: 'scroll'
+                                    }}
+                                    onEmojiClick={onEmojiClick}
+                            />
+                        )}
+                        {/* Input tin nhắn */}
+                        <input
+                            type="text"
+                            className="write-message"
+                            placeholder="Type your message here"
+                            value={msg}
+                            onChange={(e) => setMsg(e.target.value)}
+                        />
+                        {/* Nút gửi */}
+                        <button type="submit">Send</button>
+                    </div>
+                    {preview && (
+                        <div className="image-preview">
+                            <img src={preview} alt="Image Preview" />
+                            <button type="button" onClick={() => setPreview(null)}>Remove</button>
+                        </div>
                     )}
-                    {/* Input tin nhắn */}
-                    <input
-                        type="text"
-                        className="write-message"
-                        placeholder="Type your message here"
-                        value={msg}
-                        onChange={(e) => setMsg(e.target.value)}
-                    />
-                    {/* Nút gửi */}
-                    <button type="submit">Send</button>
-                </div>
-                {preview && (
-  <div className="image-preview">
-    <img src={preview} alt="Image Preview" />
-    <button type="button" onClick={() => setPreview(null)}>Remove</button>
-  </div>
-)}
-            </form>
+                </form>
 
             </section>
-            {type === "1" ? (<div className="table-container">
-                <table className="custom-table">
-                    <thead>
-                    <tr>
-                        <th>Chủ sở hữu <p style={{color: "red"}}>{own}</p></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td className="horizontal-line" colSpan="1"></td>
-                    </tr>
-                    <tr>
-                        <th>Thành viên</th>
-                    </tr>
-                    {listMember.map((item, index) => (
-                        <tr key={index}>
-                            <td>{index}:{item.name}</td>
+            {type === "1" ? (
+                <div className="table-container" style={{maxHeight: '100%', overflowY: 'auto'}}>
+                    <table className="custom-table" style={{width: '100%', borderCollapse: 'collapse'}}>
+                        <thead style={{position: 'sticky', top: -1, backgroundColor: '#fff', zIndex: 1}}>
+                        <tr>
+                            <th>Chủ sở hữu <p style={{color: 'red'}}>{own}</p></th>
                         </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </div>) : ""}
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td className="horizontal-line" colSpan="1"></td>
+                        </tr>
+                        <tr>
+                            <th>Thành viên</th>
+                        </tr>
+                        {listMember.map((item, index) => (
+                            <tr key={index}>
+                                <td>{index}{": "}{item.name}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+            ) : ""}
         </>
     );
 };
