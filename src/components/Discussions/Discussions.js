@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import './Discussions.scss';
 import UserDicusstion from "../UserDicusstion";
 import { Link } from "react-router-dom";
-import { toast } from 'react-toastify';
 
 const NewGroup = ({ style, submitNewGroup }) => {
   const [newG, setNewG] = useState('');
@@ -15,15 +14,20 @@ const NewGroup = ({ style, submitNewGroup }) => {
 
   return (
     <form style={style} onSubmit={handleSubmit}>
-      <div>Tạo group</div>
+      <div style={{textAlign : "center"}}>Tạo group</div>
+      <br/>
       <input style={{
-        border:"1px solid black"
-      }}
+        marginTop: "5px",
+        borderRadius: "3px",
+        backgroundColor: "#f2f2f2",
+        marginBottom: "10px",
+        height: "25px",
+        border:"1px solid black"      }}
         placeholder="Tên Group"
         value={newG}
         onChange={(e) => setNewG(e.target.value)}
       />
-      <button type="submit">Tạo</button>
+      <button type="submit" style={{width: "100px", margin: "auto", borderRadius: "10px" ,backgroundColor: "#4a90e2",color: "white", padding: "5px"}}>Tạo</button>
     </form>
   );
 };
@@ -39,15 +43,21 @@ const JoinGroup = ({ style, submitJoinGroup }) => {
 
   return (
     <form style={style} onSubmit={handleSubmit}>
-      <div>Tham gia Group</div>
+      <div style={{textAlign : "center"}}>Tham gia Group</div>
+      <hr/>
       <input style={{
+        marginTop: "5px",
+        borderRadius: "3px",
+        backgroundColor: "#f2f2f2",
+        marginBottom: "10px",
+        height: "25px",
         border:"1px solid black"
       }}
         placeholder="Tên Group"
         value={joinG}
         onChange={(e) => setJoinG(e.target.value)}
       />
-      <button type="submit">Tham gia</button>
+      <button type="submit" style={{width: "100px", margin: "auto", borderRadius: "10px" ,backgroundColor: "#4a90e2",color: "white", padding: "5px"}}>Tham gia</button>
     </form>
   );
 };
@@ -65,22 +75,31 @@ const NewChat = ({ style, submitNewChat }) => {
 
   return (
       <form style={style} onSubmit={handleSubmit}>
-        <div>New Chat</div>
+        <div style={{textAlign : "center"}}>New Chat</div>
+        <hr/>
         <input style={{
-        border:"1px solid black"
-      }}
+        border:"1px solid black",
+          borderRadius: "3px",
+          height: "25px",
+          backgroundColor: "#f2f2f2"
+        }}
             placeholder="Tên người mới"
             value={newC}
             onChange={(e) => setNewC(e.target.value)}
         />
         <input  style={{
+          marginTop: "5px",
+          borderRadius: "3px",
+          backgroundColor: "#f2f2f2",
+          marginBottom: "10px",
+          height: "50px",
         border:"1px solid black"
       }}
             placeholder="Nội dung"
             value={newContent}
             onChange={(e) => setNewContent(e.target.value)}
         />
-        <button type="submit">Tạo</button>
+        <button type="submit" style={{width: "50px", margin: "auto", borderRadius: "10px" ,backgroundColor: "#4a90e2",color: "white", padding: "5px"}}>Tạo</button>
       </form>
   );
 };
@@ -379,14 +398,13 @@ const handleSearchInputChange = (e) => {
       <section className="discussions">
         <div className="discussion search">
         <div className="searchbar">
-            <i className="fa fa-search" aria-hidden="true"></i>
             <input
               type="text"
               placeholder="Search..."
               value={searchQuery}
               onChange={handleSearchInputChange}
             />
-            <button onClick={handleSearch}>Search</button>
+            <button onClick={handleSearch}> <i className="fa fa-search" aria-hidden="true"></i></button>
           </div>
           <div className="buttons">
             <button onClick={() => { setShowNewC(!showNewC); setShowTodoList(false);setShowJonGr(false) }} className="btn-add-member">
@@ -421,6 +439,7 @@ const handleSearchInputChange = (e) => {
         {!showNewC &&!showJonGr && showTodoList && (
           <NewGroup
             style={{
+              display: 'grid',
               position: 'fixed',
               left: '29.5%',
               top: '12%',
@@ -454,6 +473,7 @@ const handleSearchInputChange = (e) => {
               boxShadow: '0 6px 12px rgba(0, 0, 0, 0.2)', // Increased shadow
               width: '320px', // Increased width
               maxWidth: '90vw',
+              display: 'grid',
               fontSize: '16px',
               zIndex: 1000,
               border: '1px solid #ddd', // Added border
@@ -467,6 +487,7 @@ const handleSearchInputChange = (e) => {
         {showNewC && !showJonGr && !showTodoList && (
             <NewChat
                 style={{
+                  display: 'grid',
                   position: 'fixed',
                   left: '29.5%',
                   top: '12%', // Adjusted position to ensure spacing

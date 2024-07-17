@@ -59,13 +59,15 @@ const LogIn = () => {
 
   return (
       <div className="login-container">
-        <h2>Đăng Nhập</h2>
+        <h1 style={{textAlign: "center", fontFamily: "initial"}}>Đăng Nhập</h1>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor="username">Tài khoản:</label>
             <input
                 type="text"
                 id="username"
+                style={{backgroundColor: "#f2f2f2"}}
+                placeholder="Enter your username"
                 name="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -75,8 +77,10 @@ const LogIn = () => {
           <div className="input-group">
             <label htmlFor="password">Mật khẩu:</label>
             <input
+                placeholder="Enter your password"
                 type="password"
                 id="password"
+                style={{backgroundColor: "#f2f2f2"}}
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -85,8 +89,8 @@ const LogIn = () => {
           </div>
           <button type="submit">Đăng Nhập</button>
         </form>
-        <div className="btn-register">
-          <button><Link to="/register">Đăng kí</Link></button>
+        <div className="btn-register" style={{color: "white", marginTop: "15px"}}>
+          <button ><Link to="/register" style={{color: "white", textDecoration: "none"}}>Đăng Kí</Link></button>
         </div>
       </div>
   );
