@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="94668e6e-bde1-43aa-a1b7-7529c0df6003" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/LogIn/Login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/LogIn/Login.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Register/Register.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Register/Register.css.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+
       <change beforePath="$PROJECT_DIR$/src/components/Chat/Chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Chat/Chat.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/firebase/firebase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/firebase/firebase.js" afterDir="false" />
     </list>
@@ -49,7 +55,7 @@
     &quot;ts.external.directory.path&quot;: &quot;D:\\WebStorm\\WebStorm 2023.3.5\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\CloneWeb\App-chat-nhom16\src\components" />
