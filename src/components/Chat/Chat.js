@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import Picker, {SkinTones} from 'emoji-picker-react';
 import { storage } from "../../firebase/firebase";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
-
+import {isBase64, decodeFromBase64, encodeToBase64} from "../base64";
 
 const Chat = () => {
     // console.log("updataadaaf")
@@ -26,8 +26,6 @@ const Chat = () => {
     const [showPicker, setShowPicker] = useState(false);
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(null);
-    
-    
     const onEmojiClick = (event, emojiObject) => {
         const emoji = event?.emoji;
         if (emoji) {
@@ -175,7 +173,7 @@ const Chat = () => {
                 const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
                 newRow.innerHTML = `
               <td id="tdMess1" style="color: blue; width: 200px; border-radius: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); background-color: #f2f2f2; padding: 20px;">
-                ${message.data.mes}
+                ${isBase64(message.data.mes) ? decodeFromBase64(message.data.mes) : message.data.mes}
                 <br/>
                 <p className="detailMes" style="font-size: 10px; color: black;">
                   ${currentTime}
@@ -319,7 +317,7 @@ const Chat = () => {
                         data: {
                             type: "people",
                             to: person,
-                            mes: imageUrl == null ? msg : imageUrl,
+                            mes: imageUrl == null ? encodeToBase64(msg) : imageUrl,
                         },
                     },
                 };
@@ -359,7 +357,7 @@ const Chat = () => {
                         data: {
                             type: "room",
                             to: person,
-                            mes: imageUrl == null ? msg : imageUrl,
+                            mes: imageUrl == null ? encodeToBase64(msg) : imageUrl,
                         },
                     },
                 };
@@ -403,7 +401,10 @@ function isImage(mes) {
 function renderMessageContent(mes) {
     if (isImage(mes)) {
         return <img src={mes} alt="message content" style={{ maxWidth: "100%", height: "auto" }} />;
-    } else {
+    } else if (isBase64(mes)) {
+        const decodedMessage = decodeFromBase64(mes);
+        return <span>{decodedMessage}</span>;
+    }else {
         return <span>{mes}</span>;
     }
 }
@@ -608,7 +609,7 @@ function renderMessageContent(mes) {
                     {preview && (
                         <div className="image-preview" style={{marginBottom:"-300px"}}>
                             <img src={preview} alt="Image Preview"
-                             style={{maxHeight:"100px", marginLeft:"-220px", marginBottom:"-80px"}}/>
+                             style={{maxHeight:"100px", marginLeft:"-300px",}}/>
                             <button type="button" onClick={() => setPreview(null)} >Remove</button>
                         </div>
                     )}
