@@ -26,6 +26,8 @@ const Chat = () => {
     const [showPicker, setShowPicker] = useState(false);
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(null);
+    
+    
     const onEmojiClick = (event, emojiObject) => {
         const emoji = event?.emoji;
         if (emoji) {
@@ -263,8 +265,6 @@ const Chat = () => {
 
 
 
-
-
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -392,7 +392,21 @@ const Chat = () => {
             }
         }
     };
+// Hàm kiểm tra xem nội dung có phải là hình ảnh hay không, bao gồm cả liên kết Firebase
+function isImage(mes) {
+    const imageRegex = /\.(png|jpe?g|gif)$/i;
+    const firebaseRegex = /firebasestorage\.googleapis\.com/;
+    return imageRegex.test(mes) || firebaseRegex.test(mes);
+}
 
+// Hàm render nội dung của tin nhắn
+function renderMessageContent(mes) {
+    if (isImage(mes)) {
+        return <img src={mes} alt="message content" style={{ maxWidth: "100%", height: "auto" }} />;
+    } else {
+        return <span>{mes}</span>;
+    }
+}
 
 
 
@@ -442,7 +456,7 @@ const Chat = () => {
                                             backgroundColor: "#f2f2f2",
                                             padding: "20px", // Adjust margin as needed
                                         }} className="you">
-                                            {message.mes}
+                                            {renderMessageContent(message.mes)}
                                             <>
                                                 <br/>
 
@@ -471,7 +485,7 @@ const Chat = () => {
                                             padding: "20px",
                                             textAlign: "right",
                                         }} className="me">
-                                            {message.mes}
+                                            {renderMessageContent(message.mes)}
                                             <br/>
                                             <p className="detailMes"
                                                style={{fontSize: "10px", color: "black"}}>
@@ -497,7 +511,7 @@ const Chat = () => {
                                             backgroundColor: "#f2f2f2",
                                             padding: "20px", // Adjust margin as needed
                                         }} className="you">
-                                            {message.mes}
+                                            {renderMessageContent(message.mes)}
                                             <>
                                                 <br />
                                                 <span className="detailMes" style={{fontSize: "10px", color: "black" , whiteSpace: "nowrap"}}>
@@ -529,7 +543,7 @@ const Chat = () => {
                                             padding: "20px",
                                             textAlign: "right",
                                         }} className="me">
-                                            {message.mes}
+                                           {renderMessageContent(message.mes)}
                                             <br/>
                                             <p className="detailMes"
                                                style={{fontSize: "10px", color: "black"}}>{message.createAt}
@@ -567,7 +581,7 @@ const Chat = () => {
                         ></i>
                         {/* Hiển thị picker emoji nếu showPicker là true */}
                         {showPicker && (
-                            <Picker className="emoji-picker-container"
+                            <Picker className="emoji-picker-container"  
                                     style={{
                                         position: 'absolute',
                                         width: '600px',  // Adjust this value to make it wider
@@ -592,11 +606,13 @@ const Chat = () => {
                         <button type="submit">Send</button>
                     </div>
                     {preview && (
-                        <div className="image-preview">
-                            <img src={preview} alt="Image Preview" />
-                            <button type="button" onClick={() => setPreview(null)}>Remove</button>
+                        <div className="image-preview" style={{marginBottom:"-300px"}}>
+                            <img src={preview} alt="Image Preview"
+                             style={{maxHeight:"100px", marginLeft:"-220px", marginBottom:"-80px"}}/>
+                            <button type="button" onClick={() => setPreview(null)} >Remove</button>
                         </div>
                     )}
+                    
                 </form>
 
             </section>
@@ -621,7 +637,9 @@ const Chat = () => {
                             </tr>
                         ))}
                         </tbody>
+                        
                     </table>
+                    
                 </div>
             ) : ""}
         </>
